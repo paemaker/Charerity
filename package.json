@@ -1,0 +1,23 @@
+{
+  "name": "scharerity",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch Backend --exec node --experimental-modules Backend/Server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pae, Kurt",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "mongoose": "^5.12.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
