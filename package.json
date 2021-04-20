@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "cd Frontend && npm install && npm run build",
-    "start": "nodemon --watch Backend --exec node --experimental-modules Backend/Server.js"
+    "start": "nodemon --watch Backend --exec node --experimental-modules Backend/Server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pae, Kurt",
   "license": "ISC",
@@ -24,7 +25,7 @@
     "nodemon": "^2.0.7"
   },
   "engines": {
-    "node": "12.4.0",
-    "npm": "6.9.0"
+    "node": "12.16.2",
+    "npm": "6.14.4"
   }
 }
