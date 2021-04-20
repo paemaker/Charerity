@@ -1,9 +1,11 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+
+import { BiDetail } from 'react-icons/bi'
 import LoadingScreen from './LoadingScreen';
 import MessageScreen from './MessageScreen';
+import React from 'react';
 import { listOrderHistory } from './Redux/Actions/OrderActions';
+import styled from 'styled-components';
 
 const Container = styled.div`
     padding: 60px 150px;
@@ -125,7 +127,7 @@ export default function OrderHistory(props) {
                                             <TH>วันที่รับบริจาค</TH>
                                             <TH>วิธีการชำระเงิน</TH>
                                             <TH>สถานะการขนส่ง</TH>
-                                            <TH>อื่น ๆ</TH>
+                                            <TH>รายละเอียด</TH>
                                         </TR>
                                     </thead>
                                     <tbody>
@@ -138,7 +140,7 @@ export default function OrderHistory(props) {
                                                 <TD>
                                                     <Button 
                                                         onClick={() => {props.history.push(`/order/${order._id}`)}}
-                                                    >รายละเอียด</Button>
+                                                    ><BiDetail /></Button>
                                                 </TD>
                                             </TR>
                                         ))}

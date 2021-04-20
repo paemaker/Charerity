@@ -205,7 +205,7 @@ export default function ItemList(props) {
                                     <thead>
                                         <TR>
                                             <TH>รหัสหนังสือ</TH>
-                                            <TH>วันที่รับบริจาค</TH>
+                                            <TH>ชื่อหนังสือ</TH>
                                             <TH>จำนวน</TH>
                                             <TH>ประเภท</TH>
                                             <TH>อื่น ๆ</TH>

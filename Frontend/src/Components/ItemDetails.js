@@ -42,7 +42,7 @@ const Card = styled.div`
     }
 `;
 const Img = styled.img`
-    width: 100%;
+    width: 50%;
     padding: 50px;
     // max-width: 500px;
     // max-height: 300px;
@@ -139,7 +139,9 @@ export default function ItemDetails(props) {
                         <Section>
                             <Title>{item.title}</Title>
                             <h3 style={{color: '#4b778d'}}>Owner : {item.writer}</h3>
-                            <div style={{color: '#4b778d'}}>{item.content}</div>
+                            <div style={{color: '#4b778d'}}>รายละเอียด : {item.description}</div>
+                            <div style={{color: '#4b778d'}}>จำนวน : {item.quantity}</div>
+                            <div style={{color: '#4b778d'}}>ประเภท : {item.category}</div>
                             {
                                 item.quantity > 0 && (
                                     <>

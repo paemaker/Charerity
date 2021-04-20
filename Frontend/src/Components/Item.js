@@ -1,13 +1,14 @@
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Link } from "react-router-dom";
 import React from 'react';
-import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { detailItems } from './Redux/Actions/ItemActions';
+import styled from 'styled-components';
 
 const Card = styled.div`
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 200px;
     border: solid 1px #28b5b5;
     background-color: #f8f5f1;
     padding: 10px;
@@ -49,7 +50,7 @@ const Button = styled.button`
     color: ${props => props.detail ? "#28b5b5" : "#f8ede3"};
     font-size: 1em;
     margin: 0 0 0 10px;
-    padding: 0.5em 2em;
+    padding: 10px 20px;
     border: 2px solid #28b5b5;
     cursor: pointer;
     transition: 0.5s;
@@ -94,7 +95,7 @@ export default function Item(props) {
                         <Title>{object.title}</Title>
                     </Section>
                     <Qty>จำนวน : {object.quantity} เล่ม</Qty>
-                    <Owner>เจ้าของ : {object.writer}</Owner>
+                    <Owner>ผู้เขียน : {object.writer}</Owner>
                     <ButtonSection>
                         <Link to={`/detail/${object._id}`}>
                             <Button detail>
@@ -102,7 +103,7 @@ export default function Item(props) {
                             </Button>
                         </Link>
 
-                        <Button onClick={addToBasketHandler}>รับ</Button>
+                        {/* <Button onClick={addToBasketHandler}>รับ</Button> */}
                     </ButtonSection>
                 </Card>
 

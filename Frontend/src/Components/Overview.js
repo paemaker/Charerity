@@ -1,10 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from './Redux/Actions/OrderActions';
-import { ORDER_CREATE_RESET } from './Redux/Constants/AllConstants';
+
 import LoadingScreen from './LoadingScreen';
 import MessageScreen from './MessageScreen';
+import { ORDER_CREATE_RESET } from './Redux/Constants/AllConstants';
+import React from 'react';
+import { createOrder } from './Redux/Actions/OrderActions';
+import styled from 'styled-components';
 
 const Container = styled.div`
     padding: 60px 150px;
@@ -92,6 +93,10 @@ const Button = styled.button`
         margin-left: 0;
     }
 `;
+const Img = styled.img`
+    width: 100%;
+    max-width: 300px;
+`;
 
 export default function Overview(props) {
     const basket = useSelector(state => state.basket);
@@ -145,6 +150,9 @@ export default function Overview(props) {
                             <ZoneTitle>หนังสือที่รับบริจาค</ZoneTitle>
                             {basket.basketItems.map(item => (
                                 <React.Fragment>
+                                    <ZoneDetail>
+                                        <Img src={item.image} alt={item.title} />
+                                    </ZoneDetail>
                                     <ZoneDetail>{item.title}</ZoneDetail>
                                     <ZoneDetail>{item.writer}</ZoneDetail>
                                 </React.Fragment>

@@ -1,13 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { loginUser } from './Redux/Actions/UserActions';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { Link } from 'react-router-dom';
+import LoadingScreen from './LoadingScreen';
+import MessageScreen from './MessageScreen';
+import React from 'react';
+import { loginUser } from './Redux/Actions/UserActions';
+import styled from 'styled-components';
 
 const Container = styled.div`
     padding: 60px 150px;
     display: flex;
+    flex-flow: column wrap;
     justify-content: center;
+    align-items: center;
     background-color: #f8f5f1;
 
     @media (max-width: 770px) {
@@ -39,7 +44,7 @@ const Card = styled.div`
 `;
 const PageTitle = styled.h1`
     text-transform: uppercase;
-    margin: 30px 0 80px;
+    margin: 30px 0 50px;
     color: #4b778d;
 `;
 const Button = styled.button`
@@ -99,7 +104,7 @@ export default function Login(props) {
     const [password, setPassword] = React.useState('');
     const dispatch = useDispatch();
     const userLogin = useSelector(state => state.userLogin);
-    const { userData } = userLogin;
+    const { loading, error, userData } = userLogin;
     const redirect = props.location.search ? props.location.search.split('=')[1] : '/';
 
     const submitHandler = (e) => {
@@ -118,6 +123,18 @@ export default function Login(props) {
 
             <Container>
                 <Card>
+
+                {loading && (
+                    <div style={{margin: '10px 0 30px'}}>
+                        <LoadingScreen />
+                    </div>
+                )}
+                {error && (
+                    <div style={{margin: '10px 0 30px'}}>
+                        <MessageScreen color={false}>{error}</MessageScreen>
+                    </div>
+                )}
+
                     <PageTitle>เข้าสู่ระบบ</PageTitle>
 
                     <Form onSubmit={submitHandler}>
