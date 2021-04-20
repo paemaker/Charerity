@@ -10,17 +10,18 @@ const Container = styled.div`
     padding: 60px 150px;
     display: flex;
     justify-content: center;
-    background-color: #f8ede3;
+    background-color: #f8f5f1;
 `;
 const Card = styled.div`
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
-    border: solid 1px #4b778d;
+    border: solid 1px #28b5b5;
     width: 1000px;
     transition: 0.5s;
-    background-color: #f8ede3;
+    background-color: #f8f5f1;
+
     :hover {
         box-shadow:
             0 2.8px 2.2px rgba(0, 0, 0, 0.034),
@@ -30,11 +31,12 @@ const Card = styled.div`
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12)
         ;
+        background-color: #f8ede3;
     }
 `;
-const Page = styled.h1`
+const PageTitle = styled.h1`
     text-transform: uppercase;
-    margin: 30px 0 80px;
+    margin: 30px 0 50px;
     color: #4b778d;
 `;
 const Selected = styled.div`
@@ -67,11 +69,9 @@ const Button = styled.button`
     color: ${props => props.confirm ? "#f8ede3" : "#ff7171"};
     background-color: ${props => props.confirm ? "#28b5b5" : "#f8ede3"};
     font-size: 1em;
-    margin: 0 0 0 10px;
     padding: 0.5em 2em;
     margin: ${props => props.confirm ? "80px 0 30px" : "0"};
     border: ${props => props.confirm ? "solid 2px #28b5b5" : "solid 2px #ff7171"};
-    border-radius: 3px;
     width: ${props => props.confirm ? "50%" : ""};
     transition: 0.5s;
 
@@ -102,7 +102,6 @@ const DeleteButton = styled.button`
     font-size: 1em;
     padding: 0.5em 2em;
     border: solid 2px #ff7171;
-    border-radius: 3px;
     width: 50%;
     transition: 0.5s
 
@@ -127,21 +126,42 @@ const QtySection = styled.div`
     }
 `;
 const GoToButton = styled.button`
-    background-color: #4b778d;
-    color: #ffffff;
+    background-color: #28b5b5;
+    color: #f8ede3;
     font-size: 1em;
     margin: 20px 0;
     padding: 0.5em 2em;
-    border: 2px solid #4b778d;
-    border-radius: 3px;
+    border: 2px solid #28b5b5;
     cursor: pointer;
     transition: 0.5s;
 
     :hover {
         background-color: #8fd9a8;
-        color: #ffffff;
+        color: #f8ede3;
         border: 2px solid #8fd9a8;
     }
+`;
+const Breadcrumb = styled.div`
+    display: flex;
+    flex-flow: rows wrap;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: #8fd9a8;
+    color: #ffffff;
+    border: 1px solid #8fd9a8;
+    margin: 0 0 10px;
+`;
+const BreadUl = styled.ul`
+    letter-spacing: 1px;
+    color: #4b778d;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    list-style: none;
+    margin-right: 5px;
+`;
+const BreadLi = styled.li`
+    margin-right: 5px;
 `;
 
 export default function Basket(props) {
@@ -154,7 +174,7 @@ export default function Basket(props) {
         dispatch(removeFromBasket(id));
     };
     const checkOutHandler = () => {
-        props.history.push('/register?redirect=shipping');
+        props.history.push('/login?redirect=shipping');
     };
 
     React.useEffect(() => {
@@ -168,7 +188,7 @@ export default function Basket(props) {
 
                 <Container>
                     {basketItems.length === 0 ? (
-                        <MessageScreen>
+                        <MessageScreen color={true}>
                             ตะกร้าหนังสือยังว่างเปล่าอยู่ รับบริจาคหนังสือซักหน่อยไหม?
                             <br/>
                             <Link 
@@ -183,18 +203,18 @@ export default function Basket(props) {
                     <>
                         {basketItems.map(object => (
                             <Card key={object.item}>
-                                <Page>ตะกร้าหนังสือ</Page>
+                                <PageTitle>ตะกร้าหนังสือ</PageTitle>
                                 <Selected>
-                                    <Img src={object.src} alt={object.title} />
+                                    <Img src={object.image} alt={object.title} />
 
                                     <DescriptionSection>
                                         <Title>{object.title}</Title>
-                                        <div style={{margin: '0 10px'}}>{object.owner}</div>
+                                        <div style={{margin: '0 10px'}}>{object.writer}</div>
                                     </DescriptionSection>
 
                                     <QtySection>
                                         <Title>จำนวน</Title>
-                                        <span>{object.count}</span>
+                                        <span>{object.quantity}</span>
                                     </QtySection>
 
                                     <div>

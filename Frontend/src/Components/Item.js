@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import React from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { detailItems } from './Redux/Actions/ItemActions';
 
 const Card = styled.div`
     display: flex;
     flex-direction: column;
     width: 300px;
     border: solid 1px #28b5b5;
-    background-color: #f8ede3;
+    background-color: #f8f5f1;
     padding: 10px;
     margin: 10px;
     transition: 0.5s;
@@ -20,6 +22,7 @@ const Card = styled.div`
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12)
         ;
+        background-color: #f8ede3;
     }
 `;
 const ButtonSection = styled.span`
@@ -48,7 +51,6 @@ const Button = styled.button`
     margin: 0 0 0 10px;
     padding: 0.5em 2em;
     border: 2px solid #28b5b5;
-    border-radius: 3px;
     cursor: pointer;
     transition: 0.5s;
 
@@ -71,18 +73,28 @@ const Qty = styled.h4`
 `;
 
 export default function Item(props) {
+    const dispatch = useDispatch();
     const { object } = props;
+    const itemId = object._id;
+
+    const addToBasketHandler = () => {
+        props.history.push(`/basket/${itemId}`);
+    }
+
+    React.useEffect(() => {
+        dispatch(detailItems(itemId));
+    }, [dispatch, itemId]);
 
     return (
         <React.Fragment>
 
                 <Card key={object._id}>
-                    <Img src={object.src} alt={object.title} />
+                    <Img src={object.image} alt={object.title} />
                     <Section>
                         <Title>{object.title}</Title>
                     </Section>
-                    <Qty>จำนวน : {object.count} เล่ม</Qty>
-                    <Owner>เจ้าของ : {object.owner}</Owner>
+                    <Qty>จำนวน : {object.quantity} เล่ม</Qty>
+                    <Owner>เจ้าของ : {object.writer}</Owner>
                     <ButtonSection>
                         <Link to={`/detail/${object._id}`}>
                             <Button detail>
@@ -90,7 +102,7 @@ export default function Item(props) {
                             </Button>
                         </Link>
 
-                        <Button>รับ</Button>
+                        <Button onClick={addToBasketHandler}>รับ</Button>
                     </ButtonSection>
                 </Card>
 

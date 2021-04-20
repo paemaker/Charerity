@@ -1,4 +1,10 @@
-import { BASKET_ADD_ITEM, BASKET_REM_ITEM } from "../Constants/AllConstants";
+import { 
+    BASKET_ADD_ITEM,
+    BASKET_EMPTY,
+    BASKET_REM_ITEM,
+    BASKET_SAVE_ADDRESS,
+    BASKET_SAVE_PAYMENT
+} from "../Constants/AllConstants";
 
 export const basketReducer = (state = { basketItems: [] }, action) => {
     switch(action.type) {
@@ -20,11 +26,25 @@ export const basketReducer = (state = { basketItems: [] }, action) => {
                 };
             };
         case BASKET_REM_ITEM:
-
             return {
                 ...state,
                 basketItems: state.basketItems.filter(exist => 
                     exist.item !== action.payload)
+            };
+        case BASKET_SAVE_ADDRESS: 
+            return {
+                ...state,
+                shippingAddress: action.payload
+            };
+        case BASKET_SAVE_PAYMENT:
+            return {
+                ...state,
+                paymentMethod: action.payload
+            };
+        case BASKET_EMPTY:
+            return {
+                ...state,
+                basketItems: [],
             };
         default:
             return state;
