@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cd Frontend && npm install && npm run build",
-    "start": "nodemon --watch Backend --exec node --experimental-modules Backend/Server.js",
+    "start": "nodemon --watch Backend --exec node --experimental-modules Backend/Server.js"
   },
   "author": "Pae, Kurt",
   "license": "ISC",
