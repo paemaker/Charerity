@@ -1,3 +1,4 @@
+import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from './Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BiDetail } from 'react-icons/bi'
@@ -7,40 +8,6 @@ import React from 'react';
 import { listOrderHistory } from './Redux/Actions/OrderActions';
 import styled from 'styled-components';
 
-const Container = styled.div`
-    padding: 60px 150px;
-    display: flex;
-    justify-content: center;
-    background-color: #f8f5f1;
-`;
-const Card = styled.div`
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px #28b5b5;
-    background-color: #f8f5f1;
-    box-sizing: border-box;
-    width: 1000px;
-    transition: 0.5s;
-
-    :hover {
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-        ;
-        background-color: #f8ede3;
-    }
-`;
-const PageTitle = styled.h1`
-    text-transform: uppercase;
-    margin: 30px 0 10px;
-    color: #4b778d;
-`;
 const Button = styled.button`
     cursor: pointer;
     color: #f8ede3;
@@ -62,38 +29,6 @@ const Button = styled.button`
         margin-left: 0;
     }
 `;
-const Table = styled.table`
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 0 30px;
-`;
-const TR = styled.tr`
-    border: 1px solid #28b5b5;
-    color: #4b778d;
-
-    :nth-child(even) {
-        background-color: #f8f5f1;
-    }
-
-    :hover {
-        background-color: #d8f8b7;
-    }
-`;
-const TD = styled.td`
-    border: 1px solid #28b5b5;
-    color: #4b778d;
-    text-align: left;
-    padding: 8px;
-    text-align: center;
-`;
-const TH = styled.th`
-    background-color: #28b5b5;
-    border: 1px solid #28b5b5;
-    color: #f8f5f1;
-    text-align: left;
-    padding: 8px;
-    text-align: center;
-`;
 
 export default function OrderHistory(props) {
     const dispatch = useDispatch();
@@ -107,50 +42,49 @@ export default function OrderHistory(props) {
     return (
         <React.Fragment>
             
-            <Container>
-                <Card>
-                    <PageTitle>ประวัติการรับบริจาค</PageTitle>
-                    {loading ? (
-                            <div style={{margin: '10px 0 30px'}}>
-                                <LoadingScreen />
-                            </div>
-                        ) : error ? (
-                            <div style={{padding: '10px 10px 30px'}}>
-                                <MessageScreen>{error}</MessageScreen> 
-                            </div>
-                        ) : (
-                            <div>
-                                <Table>
-                                    <thead>
-                                        <TR>
-                                            <TH>หมายเลขรายการ</TH>
-                                            <TH>วันที่รับบริจาค</TH>
-                                            <TH>วิธีการชำระเงิน</TH>
-                                            <TH>สถานะการขนส่ง</TH>
-                                            <TH>รายละเอียด</TH>
-                                        </TR>
-                                    </thead>
-                                    <tbody>
-                                        {orders.map(order => (
-                                            <TR key={order._id}>
-                                                <TD>{order._id}</TD>
-                                                <TD>{order.createdAt.substring(0, 10)}</TD>
-                                                <TD>{order.paymentMethod}</TD>
-                                                <TD>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'รอ'}</TD>
-                                                <TD>
-                                                    <Button 
-                                                        onClick={() => {props.history.push(`/order/${order._id}`)}}
-                                                    ><BiDetail /></Button>
-                                                </TD>
-                                            </TR>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </div>
-                        )
-                    }
-                </Card>
-            </Container>
+            <ColContainer>
+                {loading ? (
+                    <div style={{margin: '10px 0 30px'}}>
+                        <LoadingScreen />
+                    </div>
+                ) : error ? (
+                    <div style={{padding: '10px 0 30px'}}>
+                        <MessageScreen success={false}>{error}</MessageScreen> 
+                    </div>
+                ) : (
+                    <Card width center>
+                        <PageTitle>ประวัติการรับบริจาค</PageTitle>
+                        <div>
+                            <TableGreen>
+                                <thead>
+                                    <TRGreen>
+                                        <THGreen>หมายเลขรายการ</THGreen>
+                                        <THGreen>วันที่รับบริจาค</THGreen>
+                                        <THGreen>วิธีการชำระเงิน</THGreen>
+                                        <THGreen>สถานะการขนส่ง</THGreen>
+                                        <THGreen>รายละเอียด</THGreen>
+                                    </TRGreen>
+                                </thead>
+                                <tbody>
+                                    {orders.map(order => (
+                                        <TRGreen key={order._id}>
+                                            <TDGreen>{order._id}</TDGreen>
+                                            <TDGreen>{order.createdAt.substring(0, 10)}</TDGreen>
+                                            <TDGreen>{order.paymentMethod}</TDGreen>
+                                            <TDGreen>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'รอ'}</TDGreen>
+                                            <TDGreen>
+                                                <Button 
+                                                    onClick={() => {props.history.push(`/order/${order._id}`)}}
+                                                ><BiDetail /></Button>
+                                            </TDGreen>
+                                        </TRGreen>
+                                    ))}
+                                </tbody>
+                            </TableGreen>
+                        </div>
+                    </Card>
+                )}
+            </ColContainer>
 
         </React.Fragment>
     )

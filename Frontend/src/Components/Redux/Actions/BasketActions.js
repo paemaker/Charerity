@@ -1,4 +1,4 @@
-import { 
+import {
     BASKET_ADD_ITEM,
     BASKET_REM_ITEM,
     BASKET_SAVE_ADDRESS,
@@ -15,6 +15,7 @@ export const addToBasket = (itemId) => async (dispatch, getState) => {
         payload: {
             title: data.title,
             image: data.image,
+            description: data.description,
             quantity: data.quantity,
             item: data._id,
             writer: data.writer,

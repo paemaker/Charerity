@@ -1,8 +1,9 @@
-import express from 'express';
-import bcrypt from 'bcryptjs';
-import expressAsyncHandler from 'express-async-handler';
+import { generateToken, isAdmin, isAuth } from '../Utils.js';
+
 import User from '../Models/UserModel.js';
-import { generateToken, isAuth } from '../Utils.js';
+import bcrypt from 'bcryptjs';
+import express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 
 const UserRouter = express.Router();
 
@@ -83,5 +84,43 @@ UserRouter.put('/profile', isAuth, expressAsyncHandler(async (req, res) => {
         });
     };
 }));
+
+UserRouter.get('/', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    const user = await User.find({ });
+    res.send(user);
+}));
+
+UserRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if(user) {
+        if(user.email === 'admin@admin.com') {
+            res.status(400).send({ message: 'ไม่สามารถลบบัญชีแอดมินได้' });
+            return;
+        }
+        const deleteUser = await user.remove();
+        res.send({ message: 'บัญชีผู้ใช้ถูกลบแล้ว', user: deleteUser });
+    } else {
+        res.status(404).send({ message: 'ไม่พบบัญชีผู้ใช้' });
+    };
+}));
+
+UserRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if(user) {
+        user.fullname = req.body.fullname || user.fullname;
+        user.username = req.body.username || user.username;
+        user.email = req.body.email || user.email;
+        user.isGiver = Boolean(req.body.isGiver);
+        user.isAdmin = Boolean(req.body.isAdmin);
+
+        const updatedUser = await user.save();
+        res.send({ message: 'แก้ไขสถานะผู้ใช้เสร็จสิ้น', user: updatedUser });
+    } else {
+        res.status(404).send({ message: 'ไม่พบบัญชีผู้ใช้' });
+    };
+}));
+
 
 export default UserRouter;

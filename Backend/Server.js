@@ -29,9 +29,9 @@ app.use('/api/uploads', UploadRouter);
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/Uploads')));
-app.use(express.static(path.join(__dirname, '/Frontend/Build')));
+app.use(express.static(path.join(__dirname, '/Frontend/build')));
 app.get('*', (req, res) => {
-    req.sendFile(path.join(__dirname, '/Frontend/Build/index.html'));
+    res.sendFile(path.join(__dirname, '/Frontend/build/index.html'));
 });
 
 // app.get('/', (req, res,) => {

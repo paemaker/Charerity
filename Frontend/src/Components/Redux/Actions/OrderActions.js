@@ -174,7 +174,7 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userLogin.userData.token}`,
             }
         });
-        console.log(data);
+
         dispatch({
             type: ORDER_DELIVER_SUCCESS,
             payload: data,

@@ -1,24 +1,23 @@
-import { 
-    RiHome2Line, 
-    RiLoginBoxLine, 
-    RiShoppingBasketLine, 
-    RiLogoutBoxLine, 
-    RiUser3Line,
-    RiHistoryLine,
-    RiEditLine,
-    RiMoreFill,
+import { Dropdown, DropdownItem, DropdownMenu } from 'styled-dropdown-component';
+import {
     RiAdminLine,
-    RiDashboardLine,
     RiBookletLine,
-    RiFileListLine
+    RiDashboardLine,
+    RiEditLine,
+    RiFileListLine,
+    RiHistoryLine,
+    RiHome2Line,
+    RiLoginBoxLine,
+    RiLogoutBoxLine,
+    RiShoppingBasketLine,
+    RiUser3Line
 } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from "react-router-dom";
 import React from 'react';
-import styled from 'styled-components';
-import { Dropdown, DropdownItem, DropdownMenu } from 'styled-dropdown-component';
-import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from './Redux/Actions/UserActions';
+import styled from 'styled-components';
 
 const Nav = styled.nav`
     padding: 0 20px;

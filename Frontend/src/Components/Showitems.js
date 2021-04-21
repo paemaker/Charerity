@@ -4,18 +4,9 @@ import Item from './Item';
 import LoadingScreen from './LoadingScreen';
 import MessageScreen from './MessageScreen';
 import React from 'react';
+import { RowContainer } from './Styles/Styled';
 import { listItems } from './Redux/Actions/ItemActions';
 import styled from 'styled-components';
-
-const Container = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    align-items: flex-start;
-    height: 100%;
-    padding: 60px 150px;
-    background-color: #f8f5f1;
-`;
 
 export default function Showitems() {
     const dispatch = useDispatch();
@@ -29,16 +20,22 @@ export default function Showitems() {
     return (
         <React.Fragment>
 
-            {loading ? (
-                <LoadingScreen />
+                {loading ? (
+                    <div style={{margin: '10px 0 30px'}}>
+                        <LoadingScreen />
+                    </div>
                 ) : error ? (
-                <MessageScreen>{error}</MessageScreen>
+                    <div style={{padding: '10px 0 30px'}}>
+                        <MessageScreen success={false}>{error}</MessageScreen> 
+                    </div>
                 ) : (
-                <Container>
+
+                <RowContainer>
                     {items.map((object) => (
                         <Item key={object._id} object={object} />
                     ))}
-                </Container>
+                </RowContainer>
+
             )}
 
         </React.Fragment>

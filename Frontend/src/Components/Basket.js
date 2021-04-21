@@ -1,3 +1,4 @@
+import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, PageTitle, Title } from './Styles/Styled';
 import { addToBasket, removeFromBasket } from './Redux/Actions/BasketActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,57 +7,12 @@ import MessageScreen from './MessageScreen';
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-    padding: 60px 150px;
-    display: flex;
-    justify-content: center;
-    background-color: #f8f5f1;
-`;
-const Card = styled.div`
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px #28b5b5;
-    width: 1000px;
-    transition: 0.5s;
-    background-color: #f8f5f1;
-
-    :hover {
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-        ;
-        background-color: #f8ede3;
-    }
-`;
-const PageTitle = styled.h1`
-    text-transform: uppercase;
-    margin: 30px 0 50px;
-    color: #4b778d;
-`;
-const Selected = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+const Image = styled(Img)`
     width: 100%;
-
-    @media (max-width: 770px) {
-        flex-flow: column wrap;
-        justify-content: flex-start;
-        align-items: center;
-    }
+    max-width: 220px;
+    margin: 0;
 `;
-const Img = styled.img`
-    width: 100%;
-    max-width: 300px;
-    max-height: 300px;
-`;
-const Title = styled.h3`
+const ItemTitle = styled(Title)`
     text-transform: uppercase;
     color: #4b778d;
     
@@ -64,15 +20,12 @@ const Title = styled.h3`
         margin: 0 10px;
     }
 `;
-const Button = styled.button`
-    cursor: pointer;
+const Buttons = styled(Button)`
     color: ${props => props.confirm ? "#f8ede3" : "#ff7171"};
     background-color: ${props => props.confirm ? "#28b5b5" : "#f8ede3"};
-    font-size: 1em;
-    padding: 0.5em 2em;
-    margin: ${props => props.confirm ? "80px 0 30px" : "0"};
+    margin: ${props => props.confirm ? "5px 0" : "5px 0"};
     border: ${props => props.confirm ? "solid 2px #28b5b5" : "solid 2px #ff7171"};
-    width: ${props => props.confirm ? "50%" : ""};
+    width: ${props => props.confirm ? "100%" : "100%"};
     transition: 0.5s;
 
     :hover {
@@ -87,7 +40,7 @@ const Button = styled.button`
         padding: 0.5em 2em;
     }
 `;
-const DescriptionSection = styled.div`
+const Section = styled.div`
     display: flex;
     flex-flow: column wrap;
 
@@ -96,72 +49,17 @@ const DescriptionSection = styled.div`
         align-items: center;
     }
 `;
-const DeleteButton = styled.button`
-    cursor: pointer;
-    color: #ff7171;
-    font-size: 1em;
-    padding: 0.5em 2em;
-    border: solid 2px #ff7171;
-    width: 50%;
-    transition: 0.5s
-
-    :hover {
-        background-color: #ff7171;
-        color: #f8ede3;
-    }
-
-    @media (min-width: 769px) {
-        display: none;
-    }
-`;
-const QtySection = styled.div`
+const SelectedSection = styled.div`
     display: flex;
-    flex-flow: column wrap;
+    justify-content: space-evenly;
     align-items: center;
+    width: 100%;
 
     @media (max-width: 770px) {
-        margin: 0 0 10px;
-        display: flex;
-        flex-direction: rows;
+        flex-flow: column wrap;
+        justify-content: flex-start;
+        align-items: center;
     }
-`;
-const GoToButton = styled.button`
-    background-color: #28b5b5;
-    color: #f8ede3;
-    font-size: 1em;
-    margin: 20px 0;
-    padding: 0.5em 2em;
-    border: 2px solid #28b5b5;
-    cursor: pointer;
-    transition: 0.5s;
-
-    :hover {
-        background-color: #8fd9a8;
-        color: #f8ede3;
-        border: 2px solid #8fd9a8;
-    }
-`;
-const Breadcrumb = styled.div`
-    display: flex;
-    flex-flow: rows wrap;
-    justify-content: flex-start;
-    padding: 10px;
-    background-color: #8fd9a8;
-    color: #ffffff;
-    border: 1px solid #8fd9a8;
-    margin: 0 0 10px;
-`;
-const BreadUl = styled.ul`
-    letter-spacing: 1px;
-    color: #4b778d;
-    margin: 0;
-    padding: 0;
-    display: inline-flex;
-    list-style: none;
-    margin-right: 5px;
-`;
-const BreadLi = styled.li`
-    margin-right: 5px;
 `;
 
 export default function Basket(props) {
@@ -186,64 +84,77 @@ export default function Basket(props) {
     return (
         <React.Fragment>
 
-                <Container>
-                    {basketItems.length === 0 ? (
-                        <MessageScreen color={true}>
-                            ตะกร้าหนังสือยังว่างเปล่าอยู่ รับบริจาคหนังสือซักหน่อยไหม?
-                            <br/>
-                            <Link 
-                                to='/'
-                                style={{textDecoration: 'none'}}
-                            >
-                                <GoToButton>ไปหน้าหลัก</GoToButton>
+            <ColContainer>
+                {basketItems.length !== 0 ? (
+                    <Breadcrumb>
+                        <BreadUl>
+                            <Link to='/' style={{color: '#4b778d'}}>
+                                <BreadLi>หน้าหลัก</BreadLi>
                             </Link>
-                        </MessageScreen>
-                    ) : (
+                            <BreadLi>/</BreadLi>
+                            {basketItems.map(object => (
+                                <Link to={`/detail/${object.item}`} style={{color: '#4b778d'}}>
+                                    <BreadLi>{object.title}</BreadLi>
+                                </Link>
+                            ))}
+                            <BreadLi>/</BreadLi>
+                            <BreadLi>ตะกร้าหนังสือ</BreadLi>
+                        </BreadUl>
+                    </Breadcrumb>
+                ) : null}
                     
-                    <>
-                        {basketItems.map(object => (
-                            <Card key={object.item}>
-                                <PageTitle>ตะกร้าหนังสือ</PageTitle>
-                                <Selected>
-                                    <Img src={object.image} alt={object.title} />
+                {basketItems.length === 0 ? (
+                    <MessageScreen success={false}>
+                        ตะกร้าหนังสือยังว่างเปล่าอยู่ รับบริจาคหนังสือซักหน่อยไหม?<br/>
+                        <Link 
+                            to='/'
+                            style={{textDecoration: 'none', marginTop: '20px'}}
+                        ><Button>ไปหน้าหลัก</Button>
+                        </Link>
+                    </MessageScreen>
+                ) : (
+                    
+                <>
+                    {basketItems.map(object => (
+                        <Card width center key={object.item}>
+                            <PageTitle>ตะกร้าหนังสือ</PageTitle>
 
-                                    <DescriptionSection>
-                                        <Title>{object.title}</Title>
-                                        <div style={{margin: '0 10px'}}>{object.writer}</div>
-                                    </DescriptionSection>
+                            <SelectedSection>
+                                <Image src={object.image} alt={object.title} />
 
-                                    <QtySection>
-                                        <Title>จำนวน</Title>
-                                        <span>{object.quantity}</span>
-                                    </QtySection>
+                                <Section>
+                                    <ItemTitle>{object.title}</ItemTitle>
+                                    <div style={{margin: '0 10px'}}>{object.writer}</div>
+                                </Section>
 
-                                    <div>
-                                        <Button
-                                            onClick={() => removeFromBasketHandler(object.item)}
-                                        >
-                                            ลบ
-                                        </Button>
-                                    </div>
-                                </Selected>
+                                <Section>
+                                    <ItemTitle>จำนวน</ItemTitle>
+                                    <div style={{margin: '0 40px'}}>{object.quantity}</div>
+                                </Section>
+                                
+                                <div style={{width: '100px'}}>
+                                    <Buttons
+                                        onClick={() => removeFromBasketHandler(object.item)}
+                                    >
+                                        ลบ
+                                    </Buttons>
+                                    <br/>
+                                    <Buttons
+                                        confirm 
+                                        disabled={basketItems.length === 0}
+                                        onClick={checkOutHandler}
+                                    >
+                                        ต่อไป
+                                    </Buttons>
+                                </div>
+                            </SelectedSection>
+                            <div style={{marginBottom: '30px'}} />
+                        </Card>
+                    ))}
+                </>
 
-                                <DeleteButton 
-                                    onClick={() => removeFromBasketHandler(object.item)}
-                                >
-                                    ลบ
-                                </DeleteButton>
-                                <Button 
-                                    confirm 
-                                    disabled={basketItems.length === 0}
-                                    onClick={checkOutHandler}
-                                >
-                                    ต่อไป
-                                </Button>
-                            </Card>
-                        ))}
-                    </>
-
-                    )}
-                </Container>
+                )}
+            </ColContainer>
 
         </React.Fragment>
     )

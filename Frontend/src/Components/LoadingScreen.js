@@ -1,12 +1,13 @@
+import ClipLoader from 'react-spinners/ClipLoader';
 import React from 'react';
 import styled from 'styled-components';
-import ClipLoader from 'react-spinners/ClipLoader';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #f8f5f1;
     padding-top: 50px;
     height: 100%;
     z-index: 100;

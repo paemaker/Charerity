@@ -1,3 +1,4 @@
+import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from './Styles/Styled'
 import { ITEM_CREATE_RESET, ITEM_DELETE_RESET } from './Redux/Constants/AllConstants';
 import { RiAddBoxLine, RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
 import { createItem, deleteItem, listItems } from './Redux/Actions/ItemActions';
@@ -8,42 +9,6 @@ import MessageScreen from './MessageScreen';
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-    padding: 60px 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f5f1;
-`;
-const Card = styled.div`
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px #28b5b5;
-    background-color: #f8f5f1;
-    box-sizing: border-box;
-    width: 1000px;
-    transition: 0.5s;
-
-    :hover {
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-        ;
-        background-color: #f8ede3;
-    }
-`;
-const PageTitle = styled.h1`
-    text-transform: uppercase;
-    margin: 30px 0 10px;
-    color: #4b778d;
-`;
 const Button = styled.button`
     cursor: pointer;
     color: ${props => props.delete ? "#ff7171" : "#f8f5f1"};
@@ -80,38 +45,6 @@ const AddButton = styled.button`
         background-color: #8fd9a8;
         border: solid 2px #8fd9a8;
     }
-`;
-const Table = styled.table`
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 0 30px;
-`;
-const TR = styled.tr`
-    border: 1px solid #28b5b5;
-    color: #4b778d;
-
-    :nth-child(even) {
-        background-color: #f8f5f1;
-    }
-
-    :hover {
-        background-color: #d8f8b7;
-    }
-`;
-const TD = styled.td`
-    border: 1px solid #28b5b5;
-    color: #4b778d;
-    text-align: left;
-    padding: 8px;
-    text-align: center;
-`;
-const TH = styled.th`
-    background-color: #28b5b5;
-    border: 1px solid #28b5b5;
-    color: #f8f5f1;
-    text-align: left;
-    padding: 8px;
-    text-align: center;
 `;
 
 export default function ItemList(props) {
@@ -162,83 +95,80 @@ export default function ItemList(props) {
     return (
         <React.Fragment>
 
-            <Container>
-
+            <ColContainer>
                 {loadingDelete && (
                     <div style={{margin: '10px 0 30px'}}>
                         <LoadingScreen />
-                    </div>
-                )}
+                    </div>)}
+
                 {errorDelete && (
-                    <div style={{padding: '10px 10px 30px'}}>
-                        <MessageScreen color={false}>{errorDelete}</MessageScreen> 
-                    </div>
-                )}
+                    <div style={{padding: '10px 0 30px'}}>
+                        <MessageScreen success={false}>{errorDelete}</MessageScreen> 
+                    </div>)}
                 
                 {loadingCreate && (
                     <div style={{margin: '10px 0 30px'}}>
                         <LoadingScreen />
-                    </div>
-                )}
+                    </div>)}
+
                 {errorCreate && (
                     <div style={{padding: '10px 10px 30px'}}>
-                        <MessageScreen color={false}>{errorCreate}</MessageScreen> 
-                    </div>
-                )}
-                <Card>
-                    <PageTitle>รายการหนังสือ</PageTitle>
-                    <div>
-                        <AddButton onClick={addHandler}><RiAddBoxLine /></AddButton>
-                    </div>
+                        <MessageScreen success={false}>{errorCreate}</MessageScreen> 
+                    </div>)}
 
-                    {loading ? (
-                            <div style={{margin: '10px 0 30px'}}>
-                                <LoadingScreen />
-                            </div>
-                        ) : error ? (
-                            <div style={{padding: '10px 10px 30px'}}>
-                                <MessageScreen color={false}>{error}</MessageScreen> 
-                            </div>
-                        ) : (
-                            <div>
-                                <Table>
-                                    <thead>
-                                        <TR>
-                                            <TH>รหัสหนังสือ</TH>
-                                            <TH>ชื่อหนังสือ</TH>
-                                            <TH>จำนวน</TH>
-                                            <TH>ประเภท</TH>
-                                            <TH>อื่น ๆ</TH>
-                                        </TR>
-                                    </thead>
-                                    <tbody>
-                                        {items.map(item => (
-                                            <TR key={item._id}>
-                                                <TD>{item._id}</TD>
-                                                <TD>{item.title}</TD>
-                                                <TD>{item.quantity}</TD>
-                                                <TD>{item.category}</TD>
-                                                <TD>
-                                                    <div style={{display: 'flex'}}>
-                                                        <Button
-                                                            style={{ marginRight: '5px' }}
-                                                            onClick={() => {props.history.push(`/detail/${item._id}/edit`)}}
-                                                        ><RiEdit2Line /></Button>
-                                                        <Button
-                                                            delete
-                                                            onClick={() => deleteHandler(item)}
-                                                        ><RiDeleteBin5Line /></Button>
-                                                    </div>
-                                                </TD>
-                                            </TR>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </div>
-                        )
-                    }
-                </Card>
-            </Container>
+                {loading ? (
+                    <div style={{margin: '10px 0 30px'}}>
+                        <LoadingScreen />
+                    </div>
+                ) : error ? (
+                    <div style={{padding: '10px 0 30px'}}>
+                        <MessageScreen success={false}>{error}</MessageScreen> 
+                    </div>
+                ) : (
+
+                    <Card width center>
+                        <PageTitle>รายการหนังสือ</PageTitle>
+                        <div>
+                            <AddButton onClick={addHandler}><RiAddBoxLine /></AddButton>
+                        </div>
+                        <div>
+                            <TableGreen>
+                                <thead>
+                                    <TRGreen>
+                                        <THGreen>รหัสหนังสือ</THGreen>
+                                        <THGreen>ชื่อหนังสือ</THGreen>
+                                        <THGreen>จำนวน</THGreen>
+                                        <THGreen>ประเภท</THGreen>
+                                        <THGreen>อื่น ๆ</THGreen>
+                                    </TRGreen>
+                                </thead>
+                                <tbody>
+                                    {items.map(item => (
+                                        <TRGreen key={item._id}>
+                                            <TDGreen>{item._id}</TDGreen>
+                                            <TDGreen>{item.title}</TDGreen>
+                                            <TDGreen>{item.quantity}</TDGreen>
+                                            <TDGreen>{item.category}</TDGreen>
+                                            <TDGreen>
+                                                <div style={{display: 'flex'}}>
+                                                    <Button
+                                                        style={{ marginRight: '5px' }}
+                                                        onClick={() => {props.history.push(`/detail/${item._id}/edit`)}}
+                                                    ><RiEdit2Line /></Button>
+                                                    <Button
+                                                        delete
+                                                        onClick={() => deleteHandler(item)}
+                                                    ><RiDeleteBin5Line /></Button>
+                                                </div>
+                                            </TDGreen>
+                                        </TRGreen>
+                                    ))}
+                                </tbody>
+                            </TableGreen>
+                        </div>
+                    </Card>
+                )}
+            </ColContainer>
 
         </React.Fragment>
     )

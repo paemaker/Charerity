@@ -1,44 +1,14 @@
+import { BreadLi, BreadUl, Breadcrumb, Card, ColContainer, Form, Label, PageTitle } from './Styles/Styled'
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Link } from 'react-router-dom';
 import React from 'react';
-import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
 import { savePaymentMethod } from './Redux/Actions/BasketActions';
+import styled from 'styled-components';
 
-const Container = styled.div`
-    padding: 60px 150px;
-    display: flex;
-    justify-content: center;
-    background-color: #f8f5f1;
-`;
-const Card = styled.div`
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-    align-items: center;
-    border: solid 1px #28b5b5;
-    width: 1000px;
-    transition: 0.5s;
-    background-color: #f8f5f1;
-
-    :hover {
-        box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-            0 12.5px 10px rgba(0, 0, 0, 0.06),
-            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-            0 100px 80px rgba(0, 0, 0, 0.12)
-        ;
-        background-color: #f8ede3;
-    }
-`;
-const PageTitle = styled.h1`
-    text-transform: uppercase;
-    margin: 30px 0 10px;
+const Description = styled.p`
+    margin: 0;
     color: #4b778d;
-`;
-const Description = styled.span`
-    margin: 10px 0 30px;
-    color: #28b5b5;
 `;
 const Button = styled.button`
     cursor: pointer;
@@ -65,24 +35,13 @@ const Button = styled.button`
 `;
 const RadioInput = styled.input`
     margin: 0 15px 0 0;
-
-`;
-const Form = styled.form`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-const Label = styled.h3`
-    margin: 0 0 15px 0;
-    color: #4b778d;
 `;
 
 export default function Payment(props) {
     const [paymentMethod, setPaymentMethod] = React.useState('ผู้รับบริจาคชำระเงินเอง');
     const dispatch = useDispatch();
     const basket = useSelector(state => state.basket);
-    const { shippingAddress } = basket;
+    const { shippingAddress, basketItems } = basket;
 
     if(!shippingAddress.address) {
         props.history.push('/shipping');
@@ -96,14 +55,41 @@ export default function Payment(props) {
     return (
         <React.Fragment>
 
-            <Container>
-                <Card>
-                    <PageTitle>ชำระเงิน</PageTitle>
-                    <Description>ผู้ใช้งานสามารถเลือกชำระเงินได้</Description>
+            <ColContainer>
+                <Breadcrumb>
+                    <BreadUl>
+                        <Link to='/' style={{color: '#4b778d'}}>
+                            <BreadLi>หน้าหลัก</BreadLi>
+                        </Link>
+                        <BreadLi>/</BreadLi>
+                        {basketItems.map(object => (
+                            <Link to={`/detail/${object.item}`} style={{color: '#4b778d'}}>
+                                <BreadLi>{object.title}</BreadLi>
+                            </Link>
+                        ))}
+                        <BreadLi>/</BreadLi>
+                            <Link to='/basket' style={{color: '#4b778d'}}>
+                                <BreadLi>ตะกร้าหนังสือ</BreadLi>
+                            </Link>
+                        <BreadLi>/</BreadLi>
+                            <Link to='/shipping' style={{color: '#4b778d'}}>
+                                <BreadLi>ที่อยู่ในการจัดส่ง</BreadLi>
+                            </Link>
+                        <BreadLi>/</BreadLi>
+                        <BreadLi>การชำระเงิน</BreadLi>
+                    </BreadUl>
+                </Breadcrumb>
+
+                <Card width center>
+                    <PageTitle>วิธีการชำระเงิน</PageTitle>
+                    <div style={{marginBottom: '20px'}}>
+                        <Description>1. <strong>ผู้รับบริจาคชำระเงินเอง</strong> หมายถึง การชำระเงินปลายทาง</Description>
+                        <Description>2. <strong>ผู้บริจาคชำระเงินเอง</strong> หมายถึง การชำระเงินที่บริษัทส่งพัสดุ</Description>
+                    </div>
 
                     <Form onSubmit={submitHandler}>
                         <div>
-                            <Label>เลือกวิธีการชำระเงิน</Label>
+                            <h3 style={{color: '#28b5b5', margin: '0 0 10px'}}>เลือกวิธีการชำระเงิน</h3>
                             <RadioInput 
                                 required
                                 checked
@@ -113,7 +99,7 @@ export default function Payment(props) {
                                 value='ผู้รับบริจาคชำระเงินเอง'
                                 onChange={(e) => setPaymentMethod(e.target.value)}
                             ></RadioInput>
-                            <label htmlFor='free' style={{color: '#28b5b5'}}>ผู้รับบริจาคชำระเงินเอง</label>
+                            <Label htmlFor='free'>ผู้รับบริจาคชำระเงินเอง</Label>
                             <br/>
                             <RadioInput 
                                 required
@@ -123,14 +109,14 @@ export default function Payment(props) {
                                 value='ผู้บริจาคชำระเงินเอง'
                                 onChange={(e) => setPaymentMethod(e.target.value)}
                             ></RadioInput>
-                            <label htmlFor='online' style={{color: '#28b5b5'}}>ผู้บริจาคชำระเงินเอง</label>
+                            <Label htmlFor='online'>ผู้บริจาคชำระเงินเอง</Label>
                         </div>
 
                         <Button continue>ต่อไป</Button>
                     </Form>
 
                 </Card>
-            </Container>
+            </ColContainer>
             
         </React.Fragment>
     )
