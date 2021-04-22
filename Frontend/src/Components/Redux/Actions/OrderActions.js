@@ -106,19 +106,18 @@ export const listOrderHistory = () => async (dispatch, getState) => {
     }
 };
 
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = ({ giver = '' }) => async (dispatch, getState) => {
     dispatch({
         type: ORDER_LIST_REQUEST
     });
     
     try {
         const { userLogin } = getState();
-        const { data } = await axios.get(`/api/orders`, {
+        const { data } = await axios.get(`/api/orders?giver=${giver}`, {
             headers: {
                 Authorization: `Bearer ${userLogin.userData.token}`,
             }
         });
-        console.log(data);
         dispatch({
             type: ORDER_LIST_SUCCESS,
             payload: data,

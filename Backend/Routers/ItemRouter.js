@@ -1,7 +1,8 @@
+import { isAdmin, isAuth, isGiverOrAdmin } from '../Utils.js';
+
+import Item from '../Models/ItemModel.js';
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import Item from '../Models/ItemModel.js';
-import { isAuth, isAdmin } from '../Utils.js';
 
 const Data = {
     data: [
@@ -35,7 +36,9 @@ const Data = {
 const ItemRouter = express.Router();
 
 ItemRouter.get('/', expressAsyncHandler(async (req, res) => {
-    const items = await Item.find({});
+    const giver = req.query.giver || '';
+    const giverFilter = giver ? { giver } : {};
+    const items = await Item.find({ ...giverFilter }).populate('giver', 'giver.name giver.logo');
     res.send(items);
 }));
 
@@ -55,21 +58,24 @@ ItemRouter.get('/:id', expressAsyncHandler(async (req, res) => {
     }
 }));
 
-ItemRouter.post('/', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+ItemRouter.post('/', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, res) => {
     const item = new Item({
         title: 'แก้ไข' + Date.now(0),
+        giver: req.user._id,
         image: 'แก้ไข',
         description: 'แก้ไข',
         category: 'แก้ไข',
         writer: 'แก้ไข',
         quantity: '1',
+        rating: 0,
+        numReviews: 0,
     });
 
     const createdItem = await item.save();
     res.send({ message: 'เพิ่มหนังสือแล้วเสร็จ', item: createdItem });
 }));
 
-ItemRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+ItemRouter.put('/:id', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, res) => {
     const item = await Item.findById(req.params.id);
 
     if(item) {

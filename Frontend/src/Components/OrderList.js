@@ -36,12 +36,15 @@ export default function OrderList(props) {
     const dispatch = useDispatch();
     const orderList = useSelector(state => state.orderList);
     const orderDelete = useSelector(state => state.orderDelete);
+    const userLogin = useSelector(state => state.userLogin);
     const { loading, error, orders } = orderList;
     const { 
         loading: loadingDelete, 
         error: errorDelete, 
         success: successDelete 
     } = orderDelete;
+    const { userData } = userLogin;
+    const giverMode = props.match.path.indexOf('/giver') >= 0;
 
     const deleteHandler = (order) => {
         if(window.confirm(`ต้องการลบรายการ "${order._id}" นี้หรือไม่?`)) {
@@ -50,7 +53,7 @@ export default function OrderList(props) {
     };
 
     React.useEffect(() => {
-        dispatch(listOrders());
+        dispatch(listOrders({ giver: giverMode ? userData._id : '' }));
         dispatch({
             type: ORDER_DELETE_RESET,
         });
@@ -98,7 +101,7 @@ export default function OrderList(props) {
                                     {orders.map(order => (
                                         <TRGreen key={order._id}>
                                             <TD>{order._id}</TD>
-                                            <TD>{order.user.fullname ? null : "ไม่มี"}</TD>
+                                            <TD>{order.user.fullname !== null ? order.user.fullname : "ไม่พบบัญชีผู้ใช้"}</TD>
                                             <TD>{order.createdAt.substring(0, 10)}</TD>
                                             <TD>{order.paymentMethod}</TD>
                                             <TD>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'รอ'}</TD>

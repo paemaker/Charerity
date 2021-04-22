@@ -32,8 +32,10 @@ const TR = styled.tr`
 
 export default function ItemDetails(props) {
     const dispatch = useDispatch();
-    const itemDetails = useSelector((state) => state.itemDetails);
+    const itemDetails = useSelector(state => state.itemDetails);
+    const userDetails = useSelector(state => state.userDetails);
     const { loading, error, item } = itemDetails;
+    const { user } = userDetails;
     const itemId = props.match.params.id;
 
     const addToBasketHandler = () => {
@@ -113,6 +115,16 @@ export default function ItemDetails(props) {
                                     </TD>
                                     <TD>
                                         <Info>{item.category}</Info>
+                                    </TD>
+                                </TR>
+                                <TR>
+                                    <TD>
+                                        <Info>ผู้บริจาค</Info>
+                                    </TD>
+                                    <TD>
+                                        <Link to={`/giver/${item.giver}`}>
+                                            <Info>ไป</Info>
+                                        </Link>
                                     </TD>
                                 </TR>
                             </Table>

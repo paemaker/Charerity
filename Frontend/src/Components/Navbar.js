@@ -218,6 +218,24 @@ export default function Navbar() {
                             </ListItem>
 
                             <CustomDropdownMenu hidden={moreOpen} toggle={() => setMoreOpen(!moreOpen)}>
+                                {userData && userData.isGiver && (
+                                    <>
+                                        <CustomDropdownItem>
+                                        <RiBookletLine />
+                                        <Link to='/itemlist/giver' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
+                                            <List>รายการหนังสือ</List>
+                                        </Link>
+                                        </CustomDropdownItem>
+
+                                        <CustomDropdownItem>
+                                        <RiFileListLine />
+                                        <Link to='/orderlist/giver' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
+                                            <List>รายการบริจาค</List>
+                                        </Link>
+                                        </CustomDropdownItem>
+                                    </>
+                                )}
+
                                 <CustomDropdownItem>
                                     <RiEditLine />
                                     <Link to='/profile' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>

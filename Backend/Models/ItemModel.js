@@ -6,10 +6,11 @@ const ItemSchema = mongoose.Schema({
         required: true,
         unique: true,
     },
+    giver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     image: {
-        // data: Buffer,
-        // path: String,
-        // contentType: String,
         type: String,
         required: true,
     },
@@ -29,7 +30,15 @@ const ItemSchema = mongoose.Schema({
         type: Number,
         require: true,
         min: 1
-    }
+    },
+    rating: {
+        type: Number,
+        required: true,
+    },
+    numReviews: {
+        type: Number,
+        required: true,
+    },
 }, {
     timestamps: true
 });

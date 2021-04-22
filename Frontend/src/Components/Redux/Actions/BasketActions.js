@@ -7,7 +7,7 @@ import {
 
 import axios from "axios";
 
-export const addToBasket = (itemId) => async (dispatch, getState) => {
+export const addToBasket = (itemId, quantity) => async (dispatch, getState) => {
     const { data } = await axios.get(`/api/items/${itemId}`);
 
     dispatch({
@@ -16,10 +16,11 @@ export const addToBasket = (itemId) => async (dispatch, getState) => {
             title: data.title,
             image: data.image,
             description: data.description,
-            quantity: data.quantity,
             item: data._id,
             writer: data.writer,
             category: data.category,
+            giver: data.giver,
+            quantity,
         }
     });
 

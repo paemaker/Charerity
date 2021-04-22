@@ -14,7 +14,7 @@ export default function Showitems() {
     const { loading, error, items } = itemList;
 
     React.useEffect(() => {
-        dispatch(listItems());
+        dispatch(listItems({}));
     }, [dispatch]);
 
     return (

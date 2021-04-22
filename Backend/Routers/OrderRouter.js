@@ -1,10 +1,17 @@
-import { isAdmin, isAuth } from '../Utils.js';
+import { isAdmin, isAuth, isGiverOrAdmin } from '../Utils.js';
 
 import Order from '../Models/OrderModel.js';
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
 const OrderRouter = express.Router();
+
+OrderRouter.get('/', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, res) => {
+    const giver = req.query.giver || '';
+    const giverFilter = giver ? { giver } : {};
+    const orders = await Order.find({ ...giverFilter }).populate('user', 'fullname');
+    res.send(orders);
+}));
 
 OrderRouter.get('/history', isAuth, expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
@@ -20,6 +27,7 @@ OrderRouter.post('/', isAuth, expressAsyncHandler(async (req, res) => {
             shippingAddress: req.body.shippingAddress,
             paymentMethod: req.body.paymentMethod,
             user: req.user._id,
+            giver: req.body.orderItems[0].giver,
         });
         const createOrder = await order.save();
         res.status(201).send({ message: 'สร้างรายการใหม่แล้วเสร็จ', order: createOrder })
@@ -34,11 +42,6 @@ OrderRouter.get('/:id', isAuth, expressAsyncHandler(async (req, res) => {
     } else {
         res.status(404).send({ message: 'ไม่พบรายการ' });
     }
-}));
-
-OrderRouter.get('/', expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'fullname');
-    res.send(orders);
 }));
 
 OrderRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {

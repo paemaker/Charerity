@@ -3,7 +3,7 @@ import { detailsUser, updateUserProfile } from './Redux/Actions/UserActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen'
+import MessageScreen from './MessageScreen';
 import React from 'react';
 import { USER_UPDATE_PROFILE_RESET } from './Redux/Constants/AllConstants';
 import styled from 'styled-components';
@@ -19,6 +19,9 @@ export default function Profile() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [giverName, setGiverName] = React.useState('');
+    const [giverLogo, setGiverLogo] = React.useState('');
+    const [giverDescription, setGiverDescription] = React.useState('');
 
     const dispatch = useDispatch();
     const userLogin = useSelector(state => state.userLogin);
@@ -39,9 +42,12 @@ export default function Profile() {
                 fullname,
                 username,
                 email,
-                password
-            }))
-        }
+                password,
+                giverName,
+                giverLogo,
+                giverDescription,
+            }));
+        };
     };
 
     React.useEffect(() => {
@@ -54,6 +60,11 @@ export default function Profile() {
             setFullname(user.fullname);
             setUserName(user.username);
             setEmail(user.email);
+            if(user.giver) {
+                setGiverName(user.giver.name);
+                setGiverLogo(user.giver.logo);
+                setGiverDescription(user.giver.description);
+            }
         }
     }, [dispatch, userData._id, user]);
 
@@ -133,6 +144,39 @@ export default function Profile() {
                                     id='confirm-password'
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 ></Input>
+                                {userData.isGiver && (
+                                    <>
+                                        <Label htmlFor='image'>ผู้บริจาค</Label>
+                                        {/* <div style={{border:'solid 2px #28b5b5', padding: '10px', borderRadius: '10px', marginTop: '10px'}}> */}
+                                            <Label htmlFor='giverName'>ชื่อผู้บริจาค (ชื่อแฝง)</Label>
+                                            <Input 
+                                                placeholder='กรอกชื่อในการบริจาคของคุณอีกครั้ง' 
+                                                type='text'
+                                                id='giverName'
+                                                value={giverName}
+                                                onChange={(e) => setGiverName(e.target.value)}
+                                            ></Input>
+
+                                            <Label htmlFor='giverLogo'>โลโก้</Label>
+                                            <Input 
+                                                // placeholder='กรอกรหัสผ่านของคุณอีกครั้ง' 
+                                                type='text'
+                                                id='giverLogo'
+                                                value={giverLogo}
+                                                onChange={(e) => setGiverLogo(e.target.value)}
+                                            ></Input>
+
+                                            <Label htmlFor='giverDescription'>รายละเอียดผู้บริจาค</Label>
+                                            <Input 
+                                                placeholder='กรอกรายละเอียดผู้บริจาคของคุณ' 
+                                                type='text'
+                                                id='giverDescription'
+                                                value={giverDescription}
+                                                onChange={(e) => setGiverDescription(e.target.value)}
+                                            ></Input>
+                                        {/* </div> */}
+                                    </>
+                                )}
                             </div>
 
                             <Buttons type="submit">

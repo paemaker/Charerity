@@ -6,6 +6,7 @@ export const generateToken = (user) => {
         fullname: user.fullname,
         email: user.email,
         isAdmin: user.isAdmin,
+        isGiver: user.isGiver,
     }, process.env.JWT_SECRET || 'secret', {
         expiresIn: '30d',
     });
@@ -34,5 +35,21 @@ export const isAdmin = (req, res, next) => {
         next();
     } else {
         res.status(401).send({ message: 'โทเค็นแอดมินไม่ถูกต้อง' });
+    }
+};
+
+export const isGiver = (req, res, next) => {
+    if(req.user && req.user.isGiver) {
+        next();
+    } else {
+        res.status(401).send({ message: 'โทเค็นผู้บริจาคไม่ถูกต้อง' });
+    }
+};
+
+export const isGiverOrAdmin = (req, res, next) => {
+    if(req.user && (req.user.isAdmin || req.user.isGiver)) {
+        next();
+    } else {
+        res.status(401).send({ message: 'โทเค็นผู้บริจาคและแอดมินไม่ถูกต้อง' });
     }
 };

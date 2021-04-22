@@ -52,6 +52,7 @@ export default function ItemList(props) {
     const itemList = useSelector(state => state.itemList);
     const itemCreate = useSelector(state => state.itemCreate);
     const itemDelete = useSelector(state => state.itemDelete);
+    const userLogin = useSelector(state => state.userLogin);
     const { loading, error, items } = itemList;
     const { 
         loading: loadingCreate,
@@ -64,6 +65,8 @@ export default function ItemList(props) {
         error: errorDelete,
         success: successDelete
     } = itemDelete;
+    const { userData } = userLogin;
+    const giverMode = props.match.path.indexOf('/giver') >= 0;
 
     const addHandler = () => {
         dispatch(createItem());
@@ -89,7 +92,7 @@ export default function ItemList(props) {
             });
         }
 
-        dispatch(listItems());
+        dispatch(listItems({ giver: giverMode ? userData._id : '' }));
     }, [dispatch, createdItem, props.history, successCreate, successDelete]);
 
     return (

@@ -5,6 +5,8 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import AdminRoute from './Components/Routes/AdminRoute';
 import Basket from './Components/Basket';
 import Footer from './Components/Footer';
+import Giver from './Components/Giver';
+import GiverRoute from './Components/Routes/GiverRoute';
 import ItemDetails from './Components/ItemDetails';
 import ItemEdit from './Components/ItemEdit';
 import ItemList from './Components/ItemList';
@@ -33,6 +35,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={Showitems} />
           <Route exact path='/login' component={Login} />
+          <Route exact path='/giver/:id' component={Giver} />
           <Route exact path='/payment' component={Payment} />
           <Route exact path='/shipping' component={Shipping} />
           <Route exact path='/overview' component={Overview} />
@@ -45,6 +48,8 @@ function App() {
           <PrivateRoute exact path='/profile' component={Profile} />
           <AdminRoute exact path='/orderlist' component={OrderList} />
           <AdminRoute excact path='/user/:id/edit' component={UserEdit} />
+          <GiverRoute exact path='/itemlist/giver' component={ItemList} />
+          <GiverRoute exact path='/orderlist/giver' component={OrderList} />
           <Route exact path='/order/:id' component={OrderOverview} />
           <Route exact path='/orderhistory' component={OrderHistory} />
         </Switch>

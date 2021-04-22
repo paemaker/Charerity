@@ -139,20 +139,20 @@ export default function UserEdit(props) {
                             
                             <CheckboxInput 
                                 type='checkbox'
-                                id='online'
+                                id='isGiver'
                                 checked={isGiver}
                                 onChange={(e) => setIsGiver(e.target.checked)}
                             ></CheckboxInput>
-                            <Label htmlFor='online'>ผู้บริจาค</Label>
+                            <Label htmlFor='isGiver'>ผู้บริจาค</Label>
 
                             <CheckboxInput
                                 type='checkbox'
-                                id='online'
+                                id='isAdmin'
                                 checked={isAdmin}
                                 onChange={(e) => setIsAdmin(e.target.checked)}
                                 style={{marginLeft: '20px'}}
                             ></CheckboxInput>
-                            <Label htmlFor='online'>แอดมิน</Label>
+                            <Label htmlFor='isAdmin'>แอดมิน</Label>
                         </div>
 
                         <Button register type="submit">

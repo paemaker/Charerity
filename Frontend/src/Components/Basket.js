@@ -67,6 +67,7 @@ export default function Basket(props) {
     const basket = useSelector(state => state.basket);
     const { basketItems } = basket;
     const itemId = props.match.params.id;
+    const quantity = props.location.search ? Number(props.location.search.split('=')[1]) : 1;
 
     const removeFromBasketHandler = (id) => {
         dispatch(removeFromBasket(id));
@@ -77,7 +78,7 @@ export default function Basket(props) {
 
     React.useEffect(() => {
         if(itemId) {
-            dispatch(addToBasket(itemId));
+            dispatch(addToBasket(itemId, quantity));
         }
     }, [dispatch, itemId]);
 

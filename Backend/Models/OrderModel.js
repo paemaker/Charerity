@@ -55,13 +55,18 @@ const OrderSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    giver: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     isDelivered: {
         type: Boolean,
         default: false,
     },
     deliveredAt: {
         type: Date,
-    }
+    },
+    
 }, {
     timestamps: true,
 });
