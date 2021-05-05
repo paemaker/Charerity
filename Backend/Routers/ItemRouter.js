@@ -4,52 +4,32 @@ import Item from '../Models/ItemModel.js';
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
-const Data = {
-    data: [
-        {
-            "title": "Nike Shoes",
-            "image":"../Images/Nike.jpg",
-            "description": "Welcome to our channel Dev AT. Here you can learn web designing, UI/UX designing, html css tutorials, css animations and css effects, javascript and jquery tutorials and related so on.",
-            "category":["red","black","crimson","teal"],
-            "quantity": 1,
-            "writer": 'David Moyes'
-        },
-        {
-            "title": "New Balance Shoes",
-            "image": "../Images/Adidas.jpg",
-            "description": "Welcome to our channel Dev AT. Here you can learn web designing, UI/UX designing, html css tutorials, css animations and css effects, javascript and jquery tutorials and related so on.",
-            "category":["red","black","crimson","teal"],
-            "quantity": 1,
-            "writer": 'David Moyes'
-        },
-        {
-            "title": "Adidas Shoes",
-            "image": "../Images/New Balance.jpg",
-            "description": "Just a test",
-            "category": ["red", "yellow"],
-            "quantity": 2,
-            "writer": 'David Moyes'
-        }
-    ] 
-};
-
 const ItemRouter = express.Router();
 
 ItemRouter.get('/', expressAsyncHandler(async (req, res) => {
+    const title = req.query.title || '';
     const giver = req.query.giver || '';
+    const category = req.query.category || '';
+    const titleFilter = title ? { title: { $regex: title, $options: 'i' } } : {};
     const giverFilter = giver ? { giver } : {};
-    const items = await Item.find({ ...giverFilter }).populate('giver', 'giver.name giver.logo');
+    const categoryFilter = category ? { category } : {};
+    const items = await Item.find({ ...giverFilter, ...titleFilter, ...categoryFilter }).populate('giver', 'giver.username giver.logo');
     res.send(items);
+}));
+
+ItemRouter.get('/categories', expressAsyncHandler(async (req, res) => {
+    const categories = await Item.find().distinct('category');
+    res.send(categories);
 }));
 
 ItemRouter.get('/seed', expressAsyncHandler(async (req, res) => {
     await Item.deleteMany({});
-    const createdItems = await Item.insertMany(Data.data);
+    const createdItems = await Item.insertMany(Data.users);
     res.send({ createdItems });
 }));
 
 ItemRouter.get('/:id', expressAsyncHandler(async (req, res) => {
-    const item = await Item.findById(req.params.id);
+    const item = await Item.findById(req.params.id).populate('giver', 'giver.username giver.logo giver.rating giver.numReviews');
 
     if(item) {
         res.send(item);
@@ -64,7 +44,7 @@ ItemRouter.post('/', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, res
         giver: req.user._id,
         image: 'แก้ไข',
         description: 'แก้ไข',
-        category: 'แก้ไข',
+        category: 'None',
         writer: 'แก้ไข',
         quantity: '1',
         rating: 0,
@@ -92,7 +72,7 @@ ItemRouter.put('/:id', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, r
     }
 }));
 
-ItemRouter.delete('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => {
+ItemRouter.delete('/:id', isAuth, isGiverOrAdmin, expressAsyncHandler(async (req, res) => {
     const item = await Item.findById(req.params.id);
     if (item) {
         const deleteItem = await item.remove();

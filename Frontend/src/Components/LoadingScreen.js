@@ -8,9 +8,8 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #f8f5f1;
-    padding-top: 50px;
+    // padding: 50px 0;
     height: 100%;
-    z-index: 100;
 `;
 
 export default function LoadingScreen(props) {

@@ -1,4 +1,7 @@
 import {
+    ITEM_CATEGORY_LIST_FAILURE,
+    ITEM_CATEGORY_LIST_REQUEST,
+    ITEM_CATEGORY_LIST_SUCCESS,
     ITEM_CREATE_FAILURE,
     ITEM_CREATE_REQUEST,
     ITEM_CREATE_SUCCESS,
@@ -18,13 +21,13 @@ import {
 
 import axios from 'axios';
 
-export const listItems = ({ giver = '' }) => async (dispatch) => {
+export const listItems = ({ giver = '', title = '', category = '', }) => async (dispatch) => {
     dispatch({
         type: ITEM_LIST_REQUEST
     });
 
     try {
-        const { data } = await axios.get(`/api/items?giver=${giver}`);
+        const { data } = await axios.get(`/api/items?giver=${giver}&title=${title}&category=${category}`);
         dispatch({ 
             type: ITEM_LIST_SUCCESS, 
             payload: data 
@@ -32,6 +35,26 @@ export const listItems = ({ giver = '' }) => async (dispatch) => {
     } catch(error) {
         dispatch({ 
             type: ITEM_LIST_FAILURE, 
+            payload: error.response && error.response.data.message ? 
+            error.response.data.message : error.message 
+        });
+    }
+};
+
+export const listItemCategory = () => async (dispatch) => {
+    dispatch({
+        type: ITEM_CATEGORY_LIST_REQUEST
+    });
+
+    try {
+        const { data } = await axios.get(`/api/items/categories`);
+        dispatch({ 
+            type: ITEM_CATEGORY_LIST_SUCCESS, 
+            payload: data 
+        });
+    } catch(error) {
+        dispatch({ 
+            type: ITEM_CATEGORY_LIST_FAILURE, 
             payload: error.response && error.response.data.message ? 
             error.response.data.message : error.message 
         });

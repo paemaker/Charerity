@@ -7,7 +7,7 @@ const ItemSchema = mongoose.Schema({
         unique: true,
     },
     giver: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectID,
         ref: 'User',
     },
     image: {
@@ -19,7 +19,7 @@ const ItemSchema = mongoose.Schema({
         required: true
     },
     category: {
-        type: [String],
+        type: Array,
         required: true
     },
     writer: {

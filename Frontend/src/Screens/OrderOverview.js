@@ -1,11 +1,10 @@
-import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, Info, PageTitle, TD, TR, Table, Title } from './Styles/Styled'
-import { deliverOrder, detailsOrder } from './Redux/Actions/OrderActions';
+import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, Info, PageTitle, TD, TR, Table, Title } from '../Components/Styles/Styled'
+import { deliverOrder, detailsOrder } from '../Components/Redux/Actions/OrderActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Link } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
-import { ORDER_DELIVER_RESET } from './Redux/Constants/AllConstants';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
+import { ORDER_DELIVER_RESET } from '../Components/Redux/Constants/AllConstants';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -167,7 +166,9 @@ export default function OrderOverview(props) {
                                                     <Info>ประเภท</Info>
                                                 </TD>
                                                 <TD>
-                                                    <Info>{item.category}</Info>
+                                                    {item.category.map(cat => (
+                                                        <Info>{cat.value}</Info>
+                                                    ))}
                                                 </TD>
                                             </TR>
                                         </Table>
@@ -176,13 +177,13 @@ export default function OrderOverview(props) {
                                 ))}
                             </Zoning>
                         </Section>
-                        {userData.isAdmin && !order.isDelivered && (
+                        {userData.isAdmin && !order.isDelivered ? (
                             <Button 
                                 order
                                 onClick={deliverHandler}
-                                // disabled={order.orderItems.length === 0}
-                            >นำส่ง</Button> 
-                        )}
+                                disabled={order.orderItems.length === 0}
+                            >นำส่ง</Button>
+                        ) : userData.isReceiver ? null : null}
 
                     </Card>
                 </ColContainer>

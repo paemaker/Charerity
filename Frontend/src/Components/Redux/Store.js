@@ -5,6 +5,7 @@ import {
     createStore
 } from 'redux';
 import {
+    itemCategoryListReducer,
     itemCreateReducer,
     itemDeleteReducer,
     itemDetailsReducer,
@@ -20,6 +21,7 @@ import {
     orderListReducer
 } from './Reducers/OrderReducer';
 import {
+    userAddressMapReducer,
     userDeleteReducer,
     userDetailsReducer,
     userListReducer,
@@ -49,6 +51,7 @@ const initialState = {
 const Reducer = combineReducers({ 
     itemList: itemListReducer, 
     itemDetails: itemDetailsReducer,
+    itemCategory: itemCategoryListReducer,
     itemCreate: itemCreateReducer,
     itemUpdate: itemUpdateReducer,
     itemDelete: itemDeleteReducer,
@@ -59,6 +62,7 @@ const Reducer = combineReducers({
     userList: userListReducer,
     userDelete: userDeleteReducer,
     userUpdate: userUpdateReducer,
+    userAddressMap: userAddressMapReducer,
     orderList: orderListReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailReducer,

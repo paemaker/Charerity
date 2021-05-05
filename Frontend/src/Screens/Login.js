@@ -1,11 +1,11 @@
-import { Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled'
+import { Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { loginUser } from './Redux/Actions/UserActions';
+import { loginUser } from '../Components/Redux/Actions/UserActions';
 import styled from 'styled-components';
 
 const Button = styled.button`

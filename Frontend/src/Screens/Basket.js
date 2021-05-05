@@ -1,9 +1,9 @@
-import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, PageTitle, Title } from './Styles/Styled';
-import { addToBasket, removeFromBasket } from './Redux/Actions/BasketActions';
+import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, PageTitle, Title } from '../Components/Styles/Styled';
+import { addToBasket, removeFromBasket } from '../Components/Redux/Actions/BasketActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import MessageScreen from './MessageScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -65,7 +65,7 @@ const SelectedSection = styled.div`
 export default function Basket(props) {
     const dispatch = useDispatch();
     const basket = useSelector(state => state.basket);
-    const { basketItems } = basket;
+    const { basketItems, error } = basket;
     const itemId = props.match.params.id;
     const quantity = props.location.search ? Number(props.location.search.split('=')[1]) : 1;
 
@@ -86,6 +86,12 @@ export default function Basket(props) {
         <React.Fragment>
 
             <ColContainer>
+                {error && (
+                    <div style={{padding: '10px 0 30px'}}>
+                        <MessageScreen success={false}>{error}</MessageScreen>
+                    </div>
+                )}
+
                 {basketItems.length !== 0 ? (
                     <Breadcrumb>
                         <BreadUl>

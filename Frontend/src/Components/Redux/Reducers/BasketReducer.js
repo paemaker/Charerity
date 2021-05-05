@@ -1,5 +1,6 @@
-import { 
+import {
     BASKET_ADD_ITEM,
+    BASKET_ADD_ITEM_FAILURE,
     BASKET_EMPTY,
     BASKET_REM_ITEM,
     BASKET_SAVE_ADDRESS,
@@ -15,12 +16,15 @@ export const basketReducer = (state = { basketItems: [] }, action) => {
             if(existItem) {
                 return {
                     ...state,
+                    error: '',
                     basketItems: state.basketItems.map(exist => 
                         exist.item === existItem.item ? item : exist),
                 };
             } else {
                 return {
-                    ...state, basketItems: [
+                    ...state,
+                    error: '',
+                    basketItems: [
                         ...state.basketItems, item
                     ]
                 };
@@ -28,6 +32,7 @@ export const basketReducer = (state = { basketItems: [] }, action) => {
         case BASKET_REM_ITEM:
             return {
                 ...state,
+                error: '',
                 basketItems: state.basketItems.filter(exist => 
                     exist.item !== action.payload)
             };
@@ -41,9 +46,15 @@ export const basketReducer = (state = { basketItems: [] }, action) => {
                 ...state,
                 paymentMethod: action.payload
             };
+        case BASKET_ADD_ITEM_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
         case BASKET_EMPTY:
             return {
                 ...state,
+                error: '',
                 basketItems: [],
             };
         default:

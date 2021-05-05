@@ -1,12 +1,12 @@
-import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, Info, PageTitle, TD, TR, Table, Title } from './Styles/Styled'
+import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Img, Info, PageTitle, TD, TR, Table, Title } from '../Components/Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
-import { ORDER_CREATE_RESET } from './Redux/Constants/AllConstants';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
+import { ORDER_CREATE_RESET } from '../Components/Redux/Constants/AllConstants';
 import React from 'react';
-import { createOrder } from './Redux/Actions/OrderActions';
+import { createOrder } from '../Components/Redux/Actions/OrderActions';
 import styled from 'styled-components';
 
 const Section = styled.div`
@@ -171,7 +171,9 @@ export default function Overview(props) {
                                                     <Info>ประเภท</Info>
                                                 </TD>
                                                 <TD>
-                                                    <Info>{item.category}</Info>
+                                                    {item.category.map(cat => (
+                                                        <Info>{cat.value}</Info>
+                                                    ))}
                                                 </TD>
                                             </TR>
                                         </Table>

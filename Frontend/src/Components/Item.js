@@ -1,14 +1,14 @@
 import { Card, Title } from './Styles/Styled';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from "react-router-dom";
 import React from 'react';
 import { detailItems } from './Redux/Actions/ItemActions';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 const Img = styled.img`
     width: 100%;
-    max-width: 300px;
+    // max-width: 300px;
 `;
 const Button = styled.button`
     background-color: #f8ede3;
@@ -43,15 +43,10 @@ const LinkTo = styled(Link)`
         color: #8fd9a8;
     }
 `;
-
 export default function Item(props) {
     const dispatch = useDispatch();
     const { object } = props;
     const itemId = object._id;
-
-    const addToBasketHandler = () => {
-        props.history.push(`/basket/${itemId}`);
-    }
 
     React.useEffect(() => {
         dispatch(detailItems(itemId));
@@ -73,7 +68,6 @@ export default function Item(props) {
                             รายละเอียด
                         </Button>
                     </LinkTo>
-
                 </Card>
 
         </React.Fragment>

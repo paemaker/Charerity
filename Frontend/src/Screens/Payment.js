@@ -1,9 +1,9 @@
-import { BreadLi, BreadUl, Breadcrumb, Card, ColContainer, Form, Label, PageTitle } from './Styles/Styled'
+import { BreadLi, BreadUl, Breadcrumb, Card, ColContainer, Form, Label, PageTitle } from '../Components/Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { savePaymentMethod } from './Redux/Actions/BasketActions';
+import { savePaymentMethod } from '../Components/Redux/Actions/BasketActions';
 import styled from 'styled-components';
 
 const Description = styled.p`

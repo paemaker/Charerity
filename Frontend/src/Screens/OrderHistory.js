@@ -1,11 +1,11 @@
-import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from './Styles/Styled'
+import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from '../Components/Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BiDetail } from 'react-icons/bi'
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { listOrderHistory } from './Redux/Actions/OrderActions';
+import { listOrderHistory } from '../Components/Redux/Actions/OrderActions';
 import styled from 'styled-components';
 
 const Button = styled.button`

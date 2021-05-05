@@ -15,7 +15,6 @@ UserRouter.get('/seed', expressAsyncHandler(async (req, res) => {
 
 UserRouter.post('/login', expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
-    const userbyUsername = await User.findOne({ username: req.body.username });
 
     if(user) {
         if(bcrypt.compareSync(req.body.password, user.password)) {
@@ -23,8 +22,8 @@ UserRouter.post('/login', expressAsyncHandler(async (req, res) => {
                 _id: user._id,
                 fullname: user.fullname,
                 email: user.email,
-                username: user.username,
                 isAdmin: user.isAdmin,
+                haveUsername: user.haveUsername,
                 isGiver: user.isGiver,
                 token: generateToken(user),
             });
@@ -39,7 +38,6 @@ UserRouter.post('/register', expressAsyncHandler(async (req, res) => {
     const user = new User({
         fullname: req.body.fullname,
         email: req.body.email,
-        username: req.body.username,
         password: bcrypt.hashSync(req.body.password, 8),
     });
     const newUser = await user.save();
@@ -47,9 +45,9 @@ UserRouter.post('/register', expressAsyncHandler(async (req, res) => {
         _id: newUser._id,
         fullname: newUser.fullname,
         email: newUser.email,
-        username: newUser.username,
         isAdmin: newUser.isAdmin,
-        isGiver: newUser.isGiver,
+        haveUsername: user.haveUsername,
+        isGiver: user.isGiver,
         token: generateToken(newUser),
     });
 }));
@@ -69,14 +67,13 @@ UserRouter.put('/profile', isAuth, expressAsyncHandler(async (req, res) => {
 
     if(user) {
         user.fullname = req.body.fullname || user.fullname;
-        user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
+        user.haveUsername = Boolean(req.body.haveUsername);
         if(user.isGiver) {
-            user.giver.name = req.body.giverName || user.giver.name;
+            user.giver.username = req.body.giverUsername || user.giver.username;
             user.giver.logo = req.body.giverLogo || user.giver.logo;
             user.giver.description = req.body.giverDescription || user.giver.description;
         }
-
         if(req.body.password) {
             user.password = bcrypt.hashSync(req.body.password, 8);
         }
@@ -84,10 +81,10 @@ UserRouter.put('/profile', isAuth, expressAsyncHandler(async (req, res) => {
         res.send({
             _id: updatedUser._id,
             fullname: updatedUser.fullname,
-            username: updatedUser.username,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
-            isGiver: updatedUser.isGiver,
+            haveUsername: user.haveUsername,
+            isGiver: user.isGiver,
             token: generateToken(updatedUser),
         });
     };
@@ -118,7 +115,6 @@ UserRouter.put('/:id', isAuth, isAdmin, expressAsyncHandler(async (req, res) => 
 
     if(user) {
         user.fullname = req.body.fullname || user.fullname;
-        user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
         user.isGiver = Boolean(req.body.isGiver);
         user.isAdmin = Boolean(req.body.isAdmin);

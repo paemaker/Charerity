@@ -6,7 +6,7 @@ export const RowContainer = styled.div`
     justify-content: space-around;
     align-items: flex-start;
     height: 100%;
-    padding: 60px 150px;
+    padding: 25px 150px;
     background-color: #f8f5f1;
     position: relative;
 `;
@@ -16,14 +16,16 @@ export const ColContainer = styled.div`
     justify-content: space-around;
     align-items: center;
     height: 100%;
-    padding: 60px 150px;
+    padding: 25px 150px;
     background-color: #f8f5f1;
     position: relative;
 `;
 export const Card = styled.div`
+    flex: 1 1 auto;
     display: flex;
     flex-flow: column wrap;
     width: ${props => props.width ? "1000px" : "200px"};
+    max-width: ${props => props.width ? "1000px" : "250px"};
     justify-content: ${props => props.center ? "center" : "null"};
     align-items: ${props => props.center ? "center" : "null"};;
     border: solid 1px #f8f5f1;
@@ -48,7 +50,7 @@ export const DetailCard = styled.div`
     width: 100%;
     max-width: 900px;
     display: grid;
-    grid: auto / 400px 500px;
+    grid: ${props => props.giver ? "auto / 1fr 1fr" : "auto / 400px 500px"};
     border: 1px solid #28b5b5;
     transition: 0.5s;
 
@@ -210,4 +212,8 @@ export const THGreen = styled.th`
     text-align: left;
     padding: 8px;
     text-align: center;
+`;
+export const Wrapper = styled.div`
+    background-color: #f8f5f1;
+    padding: 10px 30px 30px;
 `;

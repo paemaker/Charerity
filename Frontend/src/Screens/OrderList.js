@@ -1,11 +1,11 @@
-import { Card, ColContainer, PageTitle, TD, TDGreen, THGreen, TRGreen, TableGreen } from './Styles/Styled'
-import { deleteOrder, listOrders } from './Redux/Actions/OrderActions';
+import { Card, ColContainer, PageTitle, TD, TDGreen, THGreen, TRGreen, TableGreen } from '../Components/Styles/Styled'
+import { deleteOrder, listOrders } from '../Components/Redux/Actions/OrderActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BiDetail } from 'react-icons/bi'
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
-import { ORDER_DELETE_RESET } from './Redux/Constants/AllConstants';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
+import { ORDER_DELETE_RESET } from '../Components/Redux/Constants/AllConstants';
 import React from 'react';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import styled from 'styled-components';
@@ -84,13 +84,13 @@ export default function OrderList(props) {
                 ) : (
 
                     <Card width center>
-                        <PageTitle>รายการการรับบริจาค</PageTitle>
+                        <PageTitle>รายการบริจาค</PageTitle>
                         <div>
                             <TableGreen>
                                 <thead>
                                     <TRGreen>
                                         <THGreen>หมายเลขรายการ</THGreen>
-                                        <THGreen>บัญชีผู้ใช้</THGreen>
+                                        <THGreen>ชื่อผู้รับบริจาค</THGreen>
                                         <THGreen>วันที่รับบริจาค</THGreen>
                                         <THGreen>วิธีการชำระเงิน</THGreen>
                                         <THGreen>สถานะการขนส่ง</THGreen>
@@ -101,7 +101,7 @@ export default function OrderList(props) {
                                     {orders.map(order => (
                                         <TRGreen key={order._id}>
                                             <TD>{order._id}</TD>
-                                            <TD>{order.user.fullname !== null ? order.user.fullname : "ไม่พบบัญชีผู้ใช้"}</TD>
+                                            <TD>{order.shippingAddress.fullname}</TD>
                                             <TD>{order.createdAt.substring(0, 10)}</TD>
                                             <TD>{order.paymentMethod}</TD>
                                             <TD>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'รอ'}</TD>
@@ -111,10 +111,12 @@ export default function OrderList(props) {
                                                         style={{ marginRight: '5px' }}
                                                         onClick={() => {props.history.push(`/order/${order._id}`)}}
                                                     ><BiDetail /></Button>
-                                                    <Button
+                                                    {userData.isAdmin && (
+                                                        <Button
                                                         delete
                                                         onClick={() => deleteHandler(order)}
-                                                    ><RiDeleteBin5Line /></Button>
+                                                        ><RiDeleteBin5Line /></Button>
+                                                    )}
                                                 </div>
                                             </TD>
                                         </TRGreen>

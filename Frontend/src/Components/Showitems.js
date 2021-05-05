@@ -1,12 +1,12 @@
+import { Button, RowContainer } from './Styles/Styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Item from './Item';
+import { Link } from 'react-router-dom';
 import LoadingScreen from './LoadingScreen';
 import MessageScreen from './MessageScreen';
 import React from 'react';
-import { RowContainer } from './Styles/Styled';
 import { listItems } from './Redux/Actions/ItemActions';
-import styled from 'styled-components';
 
 export default function Showitems() {
     const dispatch = useDispatch();
@@ -21,9 +21,7 @@ export default function Showitems() {
         <React.Fragment>
 
                 {loading ? (
-                    <div style={{margin: '10px 0 30px'}}>
-                        <LoadingScreen />
-                    </div>
+                    <LoadingScreen />
                 ) : error ? (
                     <div style={{padding: '10px 0 30px'}}>
                         <MessageScreen success={false}>{error}</MessageScreen> 
@@ -31,7 +29,18 @@ export default function Showitems() {
                 ) : (
 
                 <RowContainer>
-                    {items.map((object) => (
+                    {items.length === 0 && (
+                        <MessageScreen success={false}>
+                            หน้าแสดงสือยังว่างเปล่าอยู่ บริจาคหนังสือซักหน่อยไหม?<br/>
+                            <Link 
+                                to='/itemlist/giver'
+                                style={{textDecoration: 'none', marginTop: '20px'}}
+                            ><Button>บริจาคหนังสือ</Button>
+                            </Link>
+                        </MessageScreen>
+                    )}
+
+                    {items.map(object => (
                         <Item key={object._id} object={object} />
                     ))}
                 </RowContainer>

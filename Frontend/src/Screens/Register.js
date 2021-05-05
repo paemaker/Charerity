@@ -1,11 +1,11 @@
-import { Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled'
+import { Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { registerUser } from './Redux/Actions/UserActions';
+import { registerUser } from '../Components/Redux/Actions/UserActions';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -35,7 +35,6 @@ const Button = styled.button`
 
 export default function Register(props) {
     const [fullname, setFullname] = React.useState('');
-    const [username, setUserName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -49,7 +48,7 @@ export default function Register(props) {
         if(password !== confirmPassword) {
             alert('รหัสทั้งสองไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง');
         } else {
-            dispatch(registerUser(fullname, username, email, password))
+            dispatch(registerUser(fullname, email, password))
         }
     };
 
@@ -84,15 +83,6 @@ export default function Register(props) {
                                 type='text'
                                 id='fullname'
                                 onChange={(e) => setFullname(e.target.value)}
-                            ></Input>
-
-                            <Label htmlFor='username'>ชื่อผู้ใช้</Label>
-                            <Input
-                                required
-                                placeholder='กรอกชื่อผู้ใช้ของคุณ' 
-                                type='text'
-                                id='username'
-                                onChange={(e) => setUserName(e.target.value)}
                             ></Input>
 
                             <Label htmlFor='email'>อีเมล</Label>

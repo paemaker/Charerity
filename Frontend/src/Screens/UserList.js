@@ -1,12 +1,12 @@
-import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from './Styles/Styled'
+import { Card, ColContainer, PageTitle, TDGreen, THGreen, TRGreen, TableGreen } from '../Components/Styles/Styled'
 import { RiDeleteBin5Line, RiEdit2Line } from 'react-icons/ri';
-import { deleteUser, listUsers } from './Redux/Actions/UserActions';
+import { deleteUser, listUsers } from '../Components/Redux/Actions/UserActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { USER_DETAILS_RESET } from './Redux/Constants/AllConstants';
+import { USER_DETAILS_RESET } from '../Components/Redux/Constants/AllConstants';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -90,7 +90,7 @@ export default function UserList(props) {
                                 <thead>
                                     <TRGreen>
                                         <THGreen>หมายเลขผู้ใช้</THGreen>
-                                        <THGreen>ชื่อผุ้ใช้</THGreen>
+                                        <THGreen>ชื่อผู้ใช้</THGreen>
                                         <THGreen>อีเมล</THGreen>
                                         <THGreen>ผู้บริจาค</THGreen>
                                         <THGreen>แอดมิน</THGreen>

@@ -14,6 +14,14 @@ const OrderSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        writer: {
+            type: String,
+            required: true,
+        },
+        category: {
+            type: Array,
+            required: true,
+        },
         item: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Item',

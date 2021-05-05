@@ -1,27 +1,48 @@
-import { Button, Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled';
-import { detailsUser, updateUserProfile } from './Redux/Actions/UserActions';
+import { Button, Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled';
+import { detailsUser, updateUserProfile } from '../Components/Redux/Actions/UserActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { USER_UPDATE_PROFILE_RESET } from './Redux/Constants/AllConstants';
+import { USER_UPDATE_PROFILE_RESET } from '../Components/Redux/Constants/AllConstants';
+import axios from 'axios';
 import styled from 'styled-components';
 
 const Buttons = styled(Button)`
     width: 50%;
     margin: 30px 0 50px;
 `;
+const Textarea = styled.textarea`
+    font-size: 17px;
+    box-sizing: border-box;
+    padding: 0.5rem 0.5rem;
+    margin: 10px 0;
+    border: solid 2px #28b5b5;
+    border-radius: 3px;
+    width: 100%;
+    resize: vertical;
+    color: #4b778d;
+    background-color: #f8f5f1;
+    transition: 0.5s;
+
+    :focus {
+        border: solid 2px #d2e69c;
+    }
+`;
 
 export default function Profile() {
     const [fullname, setFullname] = React.useState('');
-    const [username, setUserName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
-    const [giverName, setGiverName] = React.useState('');
+    const [giverUsername, setGiverUsername] = React.useState('');
     const [giverLogo, setGiverLogo] = React.useState('');
     const [giverDescription, setGiverDescription] = React.useState('');
+    const [haveUsername, setHaveUsername] = React.useState(false);
+    const [loadingUpload, setLoadingUpload] = React.useState(false);
+    const [errorUpload, setErrorUpload] = React.useState('');
+    const [image, setImage] = React.useState('');
 
     const dispatch = useDispatch();
     const userLogin = useSelector(state => state.userLogin);
@@ -30,6 +51,33 @@ export default function Profile() {
     const { userData } = userLogin;
     const { loading, error, user } = userDetails;
     const { success: successUpdate, error: errorUpdate, loading: loadingUpdate, } = userProfileUpdate;
+
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const Formdata = new FormData();
+
+        Formdata.append('image', file);
+        setLoadingUpload(true);
+
+        try {
+            const { data } = await axios.post('/api/uploads', Formdata, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${userData.token}`,
+                }
+            });
+            setImage(data);
+            setLoadingUpload(false);
+        } catch(error) {
+            setErrorUpload(error.message);
+            setLoadingUpload(false);
+        }
+    };
+
+    const usernameCheck = (e) => {
+        setGiverUsername(e.target.value);
+        setHaveUsername(true);
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -40,12 +88,12 @@ export default function Profile() {
             dispatch(updateUserProfile({
                 userId: user._id,
                 fullname,
-                username,
                 email,
                 password,
-                giverName,
+                giverUsername,
                 giverLogo,
                 giverDescription,
+                haveUsername,
             }));
         };
     };
@@ -58,10 +106,10 @@ export default function Profile() {
             dispatch(detailsUser(userData._id));
         } else {
             setFullname(user.fullname);
-            setUserName(user.username);
             setEmail(user.email);
+            setHaveUsername(user.haveUsername);
             if(user.giver) {
-                setGiverName(user.giver.name);
+                setGiverUsername(user.giver.username);
                 setGiverLogo(user.giver.logo);
                 setGiverDescription(user.giver.description);
             }
@@ -110,15 +158,6 @@ export default function Profile() {
                                     onChange={(e) => setFullname(e.target.value)}
                                 ></Input>
 
-                                <Label htmlFor='username'>ชื่อผู้ใช้</Label>
-                                <Input
-                                    placeholder='กรอกชื่อผู้ใช้ของคุณ' 
-                                    type='text'
-                                    id='username'
-                                    value={username}
-                                    onChange={(e) => setUserName(e.target.value)}
-                                ></Input>
-
                                 <Label htmlFor='email'>อีเมล</Label>
                                 <Input 
                                     require
@@ -146,35 +185,46 @@ export default function Profile() {
                                 ></Input>
                                 {userData.isGiver && (
                                     <>
-                                        <Label htmlFor='image'>ผู้บริจาค</Label>
-                                        {/* <div style={{border:'solid 2px #28b5b5', padding: '10px', borderRadius: '10px', marginTop: '10px'}}> */}
-                                            <Label htmlFor='giverName'>ชื่อผู้บริจาค (ชื่อแฝง)</Label>
+                                        <Label>ผู้บริจาค</Label>
+                                        <div style={{border:'solid 2px #28b5b5', padding: '10px', borderRadius: '10px', marginTop: '10px'}}>
+                                            <Label htmlFor='giverUsername'>ชื่อผู้ใช้</Label>
                                             <Input 
-                                                placeholder='กรอกชื่อในการบริจาคของคุณอีกครั้ง' 
+                                                placeholder='กรอกชื่อในการบริจาคของคุณ' 
                                                 type='text'
-                                                id='giverName'
-                                                value={giverName}
-                                                onChange={(e) => setGiverName(e.target.value)}
+                                                id='giverUsername'
+                                                value={giverUsername}
+                                                onChange={(e) => usernameCheck(e)}
                                             ></Input>
 
-                                            <Label htmlFor='giverLogo'>โลโก้</Label>
-                                            <Input 
-                                                // placeholder='กรอกรหัสผ่านของคุณอีกครั้ง' 
+                                            <Label htmlFor='image'>โลโก้</Label>
+                                            <Input
+                                                disabled
+                                                placeholder='อัปโหลดรูปภาพ'
                                                 type='text'
-                                                id='giverLogo'
-                                                value={giverLogo}
-                                                onChange={(e) => setGiverLogo(e.target.value)}
+                                                id='image'
+                                                value={image}
+                                                onChange={(e) => setImage(e.target.value)}
+                                                style={{margin: '0'}}
+                                            ></Input>
+                                            <Input 
+                                                type='file'
+                                                accept='image/*'
+                                                id='imageFile'
+                                                label='เลือกไฟล์'
+                                                onChange={uploadFileHandler}
+                                                style={{margin: '0', margin: '10px 0'}}
                                             ></Input>
 
                                             <Label htmlFor='giverDescription'>รายละเอียดผู้บริจาค</Label>
-                                            <Input 
-                                                placeholder='กรอกรายละเอียดผู้บริจาคของคุณ' 
+                                            <Textarea
+                                                rows='5'
+                                                placeholder='กรอกรายละเอียดผู้บริจาค' 
                                                 type='text'
                                                 id='giverDescription'
                                                 value={giverDescription}
                                                 onChange={(e) => setGiverDescription(e.target.value)}
-                                            ></Input>
-                                        {/* </div> */}
+                                            ></Textarea>
+                                        </div>
                                     </>
                                 )}
                             </div>

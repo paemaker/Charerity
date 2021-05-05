@@ -23,11 +23,11 @@ OrderRouter.post('/', isAuth, expressAsyncHandler(async (req, res) => {
         res.status(400).send({ message: 'ตะกร้าหนังสือว่างเปล่า '});
     } else {
         const order = new Order({
+            giver: req.body.orderItems[0].giver,
             orderItems: req.body.orderItems,
             shippingAddress: req.body.shippingAddress,
             paymentMethod: req.body.paymentMethod,
             user: req.user._id,
-            giver: req.body.orderItems[0].giver,
         });
         const createOrder = await order.save();
         res.status(201).send({ message: 'สร้างรายการใหม่แล้วเสร็จ', order: createOrder })
@@ -61,6 +61,7 @@ OrderRouter.put('/:id/deliver', isAuth, isAdmin, expressAsyncHandler(async (req,
     if(order) {
         order.isDelivered = true;
         order.deliveredAt = Date.now();
+        
         const updateOrder = await order.save();
         res.send({ message: 'นำจ่ายสำเร็จ', order: updateOrder });
     } else {

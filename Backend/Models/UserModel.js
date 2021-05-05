@@ -5,11 +5,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    username: {
-        type: String,
-        required: true,
-        // unique: true,
-    },
     email: {
         type: String,
         required: true,
@@ -26,11 +21,19 @@ const UserSchema = new mongoose.Schema({
     },
     isGiver: {
         type: Boolean,
+        default: true,
+        required: true,
+    },
+    haveUsername: {
+        type: Boolean,
         default: false,
         required: true,
-    }, 
+    },
     giver: {
-        name: String,
+        username: {
+            type: String,
+            unique: true,
+        },
         logo: String,
         description: String,
         rating: {

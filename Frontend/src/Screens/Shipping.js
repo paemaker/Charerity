@@ -1,9 +1,9 @@
-import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled';
+import { BreadLi, BreadUl, Breadcrumb, Button, Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { saveShippingAddress } from './Redux/Actions/BasketActions';
+import { saveShippingAddress } from '../Components/Redux/Actions/BasketActions';
 import styled from 'styled-components';
 
 const SubmitButton = styled(Button)`

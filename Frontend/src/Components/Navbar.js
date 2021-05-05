@@ -12,10 +12,12 @@ import {
     RiShoppingBasketLine,
     RiUser3Line
 } from 'react-icons/ri';
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from "react-router-dom";
 import React from 'react';
+import Searchbox from './Searchbox';
 import { logoutUser } from './Redux/Actions/UserActions';
 import styled from 'styled-components';
 
@@ -155,6 +157,14 @@ const CustomDropdownItem = styled(DropdownItem)`
         background-color: #f8ede3;
     }
 `;
+const SearchSection = styled.div`
+    display: flex;
+    flex-flow: rows wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f5f1;
+    padding: 0 20px;
+`;
 
 export default function Navbar() {
     const [moreOpen, setMoreOpen] = React.useState(true);
@@ -169,7 +179,7 @@ export default function Navbar() {
     const logoutHandler = () => {
         if(window.confirm(`ต้องการออกจากบัญชี "${userData.fullname}" หรือไม่?`)) {
             dispatch(logoutUser());
-        }
+        };
     };
 
     return (
@@ -233,20 +243,21 @@ export default function Navbar() {
                                             <List>รายการบริจาค</List>
                                         </Link>
                                         </CustomDropdownItem>
+                                        <hr style={{border: '0', height: '1px', background: '#28b5b5', margin: '5px 10px'}} />
                                     </>
                                 )}
-
-                                <CustomDropdownItem>
-                                    <RiEditLine />
-                                    <Link to='/profile' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
-                                        <List>แก้ไขข้อมูลส่วนตัว</List>
-                                    </Link>
-                                </CustomDropdownItem>
 
                                 <CustomDropdownItem>
                                     <RiHistoryLine />
                                     <Link to='/orderhistory' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
                                         <List>ประวัติการรับบริจาค</List>
+                                    </Link>
+                                </CustomDropdownItem>
+
+                                <CustomDropdownItem>
+                                    <RiEditLine />
+                                    <Link to='/profile' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
+                                        <List>แก้ไขข้อมูลส่วนตัว</List>
                                     </Link>
                                 </CustomDropdownItem>
 
@@ -273,12 +284,12 @@ export default function Navbar() {
                             </ListItem>
 
                             <CustomDropdownMenu hidden={adminOpen} toggle={() => setAdminOpen(!adminOpen)}>
-                                <CustomDropdownItem>
+                                {/* <CustomDropdownItem>
                                     <RiDashboardLine />
                                     <Link to='/dashboard' style={{color: '#4b778d', fontSize: '20px', textDecoration: 'none'}}>
                                         <List>แดชบอร์ด</List>
                                     </Link>
-                                </CustomDropdownItem>
+                                </CustomDropdownItem> */}
 
                                 <CustomDropdownItem>
                                     <RiUser3Line />
@@ -312,6 +323,15 @@ export default function Navbar() {
                     <Line open={toggle} />
                 </NavIcon>
             </Nav>
+            <Router>
+                <Switch>
+                    <Route render={({history}) => (
+                        <SearchSection>
+                            <Searchbox history={history} />
+                        </SearchSection>
+                    )}></Route>
+                </Switch>
+            </Router>
 
             <Overlay open={toggle}>
                 <OverlayMenu open={toggle}>

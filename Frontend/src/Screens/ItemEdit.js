@@ -1,12 +1,13 @@
-import { Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled'
-import { detailItems, updateItem } from './Redux/Actions/ItemActions';
+import { Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled'
+import { detailItems, updateItem } from '../Components/Redux/Actions/ItemActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ITEM_UPDATE_RESET } from './Redux/Constants/AllConstants';
-import { Link } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import CategoryList from '../Components/CategoryList';
+import { ITEM_UPDATE_RESET } from '../Components/Redux/Constants/AllConstants';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react'
+import Select from 'react-select';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -50,12 +51,28 @@ const Textarea = styled.textarea`
         border: solid 2px #d2e69c;
     }
 `;
+const Selector = styled(Select)`
+    font-size: 15px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 10px 0;
+    border: solid 2px #28b5b5;
+    border-radius: 3px;
+    width: 100%;
+    color: #4b778d;
+    background-color: #f8f5f1;
+    transition: 0.5s;
+
+    :focus {
+        border: solid 2px #d2e69c;
+    }
+`;
 
 export default function ItemEdit(props) {
     const [title, setTitle] = React.useState('');
     const [image, setImage] = React.useState('');
     const [description, setDescription] = React.useState('');
-    const [category, setCategory] = React.useState('');
+    const [category, setCategory] = React.useState([]);
     const [writer, setWriter] = React.useState('');
     const [quantity, setQuantity] = React.useState('');
     const [loadingUpload, setLoadingUpload] = React.useState(false);
@@ -193,13 +210,13 @@ export default function ItemEdit(props) {
                                     </div>
                                     
                                     <Label htmlFor='category'>ประเภท</Label>
-                                    <Input
-                                        placeholder='กรอกประเภทหนังสือของคุณ' 
-                                        type='text'
+                                    <Selector
+                                        isMulti
                                         id='category'
+                                        options={CategoryList}
                                         value={category}
-                                        onChange={(e) => setCategory(e.target.value)}
-                                    ></Input>
+                                        onChange={setCategory}
+                                    />
 
                                     <Label htmlFor='writer'>ผู้เขียน</Label>
                                     <Input

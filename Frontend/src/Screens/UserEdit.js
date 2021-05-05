@@ -1,11 +1,11 @@
-import { Card, ColContainer, Form, Input, Label, PageTitle } from './Styles/Styled'
-import { detailsUser, updateUser } from './Redux/Actions/UserActions';
+import { Card, ColContainer, Form, Input, Label, PageTitle } from '../Components/Styles/Styled'
+import { detailsUser, updateUser } from '../Components/Redux/Actions/UserActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { USER_UPDATE_RESET } from './Redux/Constants/AllConstants';
+import { USER_UPDATE_RESET } from '../Components/Redux/Constants/AllConstants';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -38,7 +38,6 @@ const CheckboxInput = styled.input`
 
 export default function UserEdit(props) {
     const [fullname, setFullname] = React.useState('');
-    const [username, setUsername] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [isGiver, setIsGiver] = React.useState(false);
     const [isAdmin, setIsAdmin] = React.useState(false);
@@ -58,7 +57,6 @@ export default function UserEdit(props) {
         dispatch(updateUser({
             _id: userId,
             fullname,
-            username,
             email,
             isGiver,
             isAdmin
@@ -76,12 +74,11 @@ export default function UserEdit(props) {
             dispatch(detailsUser(userId));
         } else {
             setFullname(user.fullname);
-            setUsername(user.username);
             setEmail(user.email);
             setIsGiver(user.isGiver);
             setIsAdmin(user.isAdmin);
         }
-    } ,[dispatch, user, userId, successUpdate, userId, props.history]);
+    } ,[dispatch, user, userId, successUpdate, props.history]);
 
     return (
         <React.Fragment>
@@ -117,15 +114,6 @@ export default function UserEdit(props) {
                                 id='fullname'
                                 value={fullname}
                                 onChange={(e) => setFullname(e.target.value)}
-                            ></Input>
-
-                            <Label htmlFor='username'>ชื่อผู้ใช้</Label>
-                            <Input
-                                placeholder='กรอกชื่อผู้ใช้ของคุณ' 
-                                type='text'
-                                id='username'
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
                             ></Input>
 
                             <Label htmlFor='email'>อีเมล</Label>

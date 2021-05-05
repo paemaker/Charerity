@@ -1,20 +1,21 @@
-import { BreadLi, BreadUl, Breadcrumb, Button, ColContainer, ContentSection, DetailCard, ImageSection, Img } from './Styles/Styled';
+import { BreadLi, BreadUl, Breadcrumb, Button, ColContainer, ContentSection, DetailCard, ImageSection, Img } from '../Components/Styles/Styled';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from "react-router-dom";
-import LoadingScreen from './LoadingScreen';
-import MessageScreen from './MessageScreen';
+import LoadingScreen from '../Components/LoadingScreen';
+import MessageScreen from '../Components/MessageScreen';
 import React from 'react';
-import { detailItems } from './Redux/Actions/ItemActions';
+import ReactStars from 'react-rating-stars-component';
+import { detailItems } from '../Components/Redux/Actions/ItemActions';
 import styled from 'styled-components';
 
-const Title = styled.h1`
+const Title = styled.h2`
     color: #4b778d;
     text-transform: upppercase;
     padding: 0;
     margin: 0;
 `;
-const Info = styled.h4`
+const Info = styled.p`
     color: #4b778d;
     padding: 0;
     margin: 0;
@@ -29,13 +30,19 @@ const TD = styled.td`
 `;
 const TR = styled.tr`
 `;
+const LinkTo = styled(Link)`
+    color: #4b778d;
+    text-decoration: underline;
+
+    :hover {
+        color: #8fd9a8;
+    }
+`;
 
 export default function ItemDetails(props) {
     const dispatch = useDispatch();
     const itemDetails = useSelector(state => state.itemDetails);
-    const userDetails = useSelector(state => state.userDetails);
     const { loading, error, item } = itemDetails;
-    const { user } = userDetails;
     const itemId = props.match.params.id;
 
     const addToBasketHandler = () => {
@@ -114,7 +121,9 @@ export default function ItemDetails(props) {
                                         <Info>ประเภท</Info>
                                     </TD>
                                     <TD>
-                                        <Info>{item.category}</Info>
+                                        {item.category.map(cat => (
+                                            <Info>{cat.value}</Info>
+                                        ))}
                                     </TD>
                                 </TR>
                                 <TR>
@@ -122,12 +131,18 @@ export default function ItemDetails(props) {
                                         <Info>ผู้บริจาค</Info>
                                     </TD>
                                     <TD>
-                                        <Link to={`/giver/${item.giver}`}>
-                                            <Info>ไป</Info>
-                                        </Link>
+                                        <Info giver>
+                                            <LinkTo to={`/giver/${item.giver._id}`}>
+                                                {item.giver.giver.username}
+                                            </LinkTo>
+                                        </Info>
                                     </TD>
                                 </TR>
                             </Table>
+                            {/* <span>
+                                <ReactStars value={item.giver.giver.rating} />
+                                <span>{item.giver.giver.numReviews}</span>
+                            </span> */}
 
                             {item.quantity > 0 && (
                                 <Button onClick={addToBasketHandler}>รับ</Button>

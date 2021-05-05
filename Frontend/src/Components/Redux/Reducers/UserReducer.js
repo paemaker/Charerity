@@ -1,4 +1,5 @@
 import {
+    USER_ADDRESS_MAP_CONFIRM,
     USER_DELETE_FAILURE,
     USER_DELETE_REQUEST,
     USER_DELETE_RESET,
@@ -179,6 +180,17 @@ export const userUpdateReducer = (state = {}, action) => {
             };
         case USER_UPDATE_RESET:
             return {};
+        default:
+            return state;
+    };
+};
+
+export const userAddressMapReducer = (state = {}, action) => {
+    switch(action.type) {
+        case USER_ADDRESS_MAP_CONFIRM:
+            return {
+                address: action.payload,
+            };
         default:
             return state;
     };

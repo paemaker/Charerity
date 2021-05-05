@@ -10,6 +10,7 @@ const Container = styled.div`
     bottom: 0;
     background-color: #f8ede3;
     width: 100%;
+    height: auto;
     display: grid;
     grid: auto / 1fr 1fr 1fr;
 `;
