@@ -5,6 +5,25 @@ import bcrypt from 'bcryptjs';
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
+const Data = {
+    users: [
+        {
+            fullname: 'Admin',
+            email: 'admin@admin.com',
+            password: bcrypt.hashSync('1234', 8),
+            isAdmin: true,
+            isGiver: true,
+            giver: {
+                username: 'admin',
+                logo: 'none',
+                description: 'Adminisrator',
+                rating: 4.5,
+                numReviews: 120,
+            },
+        },
+    ]
+}
+
 const UserRouter = express.Router();
 
 UserRouter.get('/seed', expressAsyncHandler(async (req, res) => {
